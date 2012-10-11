@@ -1,4 +1,2 @@
-javaee7-samples
-===============
+This workspace will provide different Java EE 7 Samples.
 
-Java EE 7 Samples
