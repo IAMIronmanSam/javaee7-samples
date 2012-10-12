@@ -45,10 +45,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Hello WebSocket</title>
-
+        <title>WebSocket Chat</title>
         <script language="javascript" type="text/javascript">
-            var wsUri = "ws://localhost:8080/HelloWebSocket/hello";
+            var wsUri = "ws://localhost:8080/Chat/chat";
             var websocket = new WebSocket(wsUri);
             websocket.onopen = function(evt) { onOpen(evt) };
             websocket.onmessage = function(evt) { onMessage(evt) };
@@ -58,9 +57,13 @@
                 output = document.getElementById("output");
             }
 
-            function say_hello() {
-                websocket.send(nameField.value);
-                writeToScreen("SENT: " + nameField.value);
+            function join() {
+//                alert(textField.value);
+                websocket.send(textField.value + " joined");
+            }
+            
+            function send_message() {
+                websocket.send(textField.value);
             }
 
             function onOpen(evt) {
@@ -69,6 +72,11 @@
 
             function onMessage(evt) {
                 writeToScreen("RECEIVED: " + evt.data);
+                if (evt.data.indexOf("joined") != -1) {
+                    userField.innerHTML += evt.data.substring(0, evt.data.indexOf(" joined")) + "\n";
+                } else {
+                    chatlogField.innerHTML += evt.data + "\n";
+                }
             }
 
             function onError(evt) {
@@ -86,14 +94,33 @@
         </script>
     </head>
     <body>
-        <h1>Getting Started with WebSocket!!</h1>
-
+        <h1>Chat!</h1>
         <div style="text-align: center;">
             <form action=""> 
-                <input onclick="say_hello()" value="Say Hello" type="button"> 
-                <input id="nameField" name="name" value="WebSocket" type="text"><br>
+                
+                <table>
+                    <tr>
+                        <td>
+                            Users<br/>
+                            <textarea readonly="true" rows="6" cols="20" id="userField"></textarea>
+                        </td>
+                        <td>
+                            Chat Log<br/>
+                            <textarea readonly="true" rows="6" cols="50" id="chatlogField"></textarea> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input id="textField" name="name" value="Duke" type="text"><br>
+                            <input onclick="join()" value="Join" type="button"> 
+                            <input onclick="send_message()" value="Chat" type="button"> 
+                        </td>
+                    </tr>
+                </table>
+
             </form>
         </div>
         <div id="output"></div>
+
     </body>
 </html>
