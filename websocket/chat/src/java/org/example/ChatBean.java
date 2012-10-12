@@ -40,8 +40,10 @@
 package org.example;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.net.websocket.EncodeException;
 import javax.net.websocket.Session;
 import javax.net.websocket.annotations.WebSocketClose;
@@ -54,7 +56,7 @@ import javax.net.websocket.annotations.WebSocketOpen;
  */
 @WebSocketEndpoint(path="/chat")
 public class ChatBean {
-    Set<Session> peers = new HashSet<>();
+    Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
     
     @WebSocketOpen
     public void onOpen(Session peer) {
