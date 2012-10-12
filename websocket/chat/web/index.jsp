@@ -47,8 +47,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>WebSocket Chat</title>
         <script language="javascript" type="text/javascript">
-            var wsUri = "ws://localhost:8080/Chat/chat";
+            var wsUri = "ws://localhost:8080/chat/chat";
             var websocket = new WebSocket(wsUri);
+            
+            var username;
             websocket.onopen = function(evt) { onOpen(evt) };
             websocket.onmessage = function(evt) { onMessage(evt) };
             websocket.onerror = function(evt) { onError(evt) };
@@ -58,12 +60,12 @@
             }
 
             function join() {
-//                alert(textField.value);
-                websocket.send(textField.value + " joined");
+                username = textField.value;
+                websocket.send(username + " joined");
             }
             
             function send_message() {
-                websocket.send(textField.value);
+                websocket.send(username + ": " + textField.value);
             }
 
             function onOpen(evt) {
