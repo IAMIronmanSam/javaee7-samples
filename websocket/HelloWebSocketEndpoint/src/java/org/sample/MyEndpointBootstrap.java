@@ -37,42 +37,42 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package org.example;
+package org.sample;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import javax.net.websocket.EncodeException;
-import javax.net.websocket.Session;
-import javax.net.websocket.annotations.WebSocketClose;
-import javax.net.websocket.annotations.WebSocketEndpoint;
-import javax.net.websocket.annotations.WebSocketMessage;
-import javax.net.websocket.annotations.WebSocketOpen;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.net.websocket.DefaultServerConfiguration;
+import javax.net.websocket.ServerConfiguration;
+import javax.net.websocket.ServerContainer;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 /**
  * @author Arun Gupta
  */
-@WebSocketEndpoint(path="/chat")
-public class ChatBean {
-    Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
-    
-    @WebSocketOpen
-    public void onOpen(Session peer) {
-        peers.add(peer);
-    }
-    
-    @WebSocketClose
-    public void onClose(Session peer) {
-        peers.remove(peer);
-    }
-    
-    @WebSocketMessage
-    public void message(String message, Session client) throws IOException, EncodeException {
-        for (Session peer : peers) {
-//            if (!peer.equals(client)) {
-                peer.getRemote().sendObject(message);
-//            }
+@WebListener
+public class MyEndpointBootstrap implements ServletContextListener {
+
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        try {
+            HelloBean helloBean = new HelloBean();
+            ServerConfiguration serverConfig = new DefaultServerConfiguration(new URI("/hello"));
+            // TODO: ContainerProvider.getServerContainer() is missing in the current impl ???
+//            ServerContainer serverContainer = ContainerProvider.getServerContainer();
+//            serverContainer.publishServer(helloBean, serverConfig);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(MyEndpointBootstrap.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        // TODO: Unregister the endpoint
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
 }

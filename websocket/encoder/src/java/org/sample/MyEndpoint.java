@@ -37,12 +37,12 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package org.example;
+package org.sample;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.net.websocket.EncodeException;
 import javax.net.websocket.Session;
 import javax.net.websocket.annotations.WebSocketClose;
@@ -51,28 +51,32 @@ import javax.net.websocket.annotations.WebSocketMessage;
 import javax.net.websocket.annotations.WebSocketOpen;
 
 /**
- * @author Arun Gupta
+ *
+ * @author arungup
  */
-@WebSocketEndpoint(path="/chat")
-public class ChatBean {
-    Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
+@WebSocketEndpoint(path="/encoder", encoders={MyMessage.class}, decoders={MyMessage.class})
+public class MyEndpoint {
+    
+    private Set<Session> peers = Collections.newSetFromMap(new ConcurrentHashMap<Session, Boolean>());
     
     @WebSocketOpen
-    public void onOpen(Session peer) {
-        peers.add(peer);
+    public void onOpen(Session session) {
+        peers.add(session);
     }
-    
+
     @WebSocketClose
-    public void onClose(Session peer) {
-        peers.remove(peer);
+    public void onClose(Session session){
+        peers.remove(session);
+    }
+
+    @WebSocketMessage
+    public void messageReceived(String message, Session client) throws IOException, EncodeException {
+        for (Session otherSession : peers) {
+            if (!otherSession.equals(client)) {
+                otherSession.getRemote().sendString(message);
+            }
+        }
+
     }
     
-    @WebSocketMessage
-    public void message(String message, Session client) throws IOException, EncodeException {
-        for (Session peer : peers) {
-//            if (!peer.equals(client)) {
-                peer.getRemote().sendObject(message);
-//            }
-        }
-    }
 }

@@ -37,42 +37,39 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package org.example;
+package org.sample;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.StringReader;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.net.websocket.DecodeException;
+import javax.net.websocket.Decoder;
 import javax.net.websocket.EncodeException;
-import javax.net.websocket.Session;
-import javax.net.websocket.annotations.WebSocketClose;
-import javax.net.websocket.annotations.WebSocketEndpoint;
-import javax.net.websocket.annotations.WebSocketMessage;
-import javax.net.websocket.annotations.WebSocketOpen;
+import javax.net.websocket.Encoder;
 
 /**
+ *
  * @author Arun Gupta
  */
-@WebSocketEndpoint(path="/chat")
-public class ChatBean {
-    Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
+public class MyMessage implements Decoder.Text<MyMessage>, Encoder.Text<MyMessage> {
     
-    @WebSocketOpen
-    public void onOpen(Session peer) {
-        peers.add(peer);
+    private JsonObject jsonObject;
+
+    @Override
+    public MyMessage decode(String string) throws DecodeException {
+        this.jsonObject = new JsonReader(new StringReader(string)).readObject();
+        
+        return this;
+    }
+
+    @Override
+    public boolean willDecode(String string) {
+        return true;
+    }
+
+    @Override
+    public String encode(MyMessage myMessage) throws EncodeException {
+        return myMessage.jsonObject.toString();
     }
     
-    @WebSocketClose
-    public void onClose(Session peer) {
-        peers.remove(peer);
-    }
-    
-    @WebSocketMessage
-    public void message(String message, Session client) throws IOException, EncodeException {
-        for (Session peer : peers) {
-//            if (!peer.equals(client)) {
-                peer.getRemote().sendObject(message);
-//            }
-        }
-    }
 }
