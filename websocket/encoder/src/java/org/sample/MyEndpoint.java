@@ -41,8 +41,8 @@ package org.sample;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import javax.net.websocket.EncodeException;
 import javax.net.websocket.Session;
 import javax.net.websocket.annotations.WebSocketClose;
@@ -57,7 +57,7 @@ import javax.net.websocket.annotations.WebSocketOpen;
 @WebSocketEndpoint(path="/encoder", encoders={MyMessage.class}, decoders={MyMessage.class})
 public class MyEndpoint {
     
-    private Set<Session> peers = Collections.newSetFromMap(new ConcurrentHashMap<Session, Boolean>());
+    Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
     
     @WebSocketOpen
     public void onOpen(Session session) {
@@ -71,6 +71,7 @@ public class MyEndpoint {
 
     @WebSocketMessage
     public void messageReceived(String message, Session client) throws IOException, EncodeException {
+        System.out.println("messageReceived: " + message);
         for (Session otherSession : peers) {
             if (!otherSession.equals(client)) {
                 otherSession.getRemote().sendString(message);
