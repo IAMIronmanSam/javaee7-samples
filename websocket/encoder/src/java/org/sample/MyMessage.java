@@ -48,7 +48,6 @@ import javax.net.websocket.EncodeException;
 import javax.net.websocket.Encoder;
 
 /**
- *
  * @author Arun Gupta
  */
 public class MyMessage implements Decoder.Text<MyMessage>, Encoder.Text<MyMessage> {
@@ -57,8 +56,10 @@ public class MyMessage implements Decoder.Text<MyMessage>, Encoder.Text<MyMessag
 
     @Override
     public MyMessage decode(String string) throws DecodeException {
+        System.out.println("decoding: " + string);
         this.jsonObject = new JsonReader(new StringReader(string)).readObject();
         
+        System.out.println(jsonObject);
         return this;
     }
 
