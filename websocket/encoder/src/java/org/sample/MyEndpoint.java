@@ -52,7 +52,7 @@ import javax.net.websocket.annotations.WebSocketOpen;
 
 /**
  *
- * @author arungup
+ * @author Arun Gupta
  */
 @WebSocketEndpoint(path="/encoder", encoders={MyMessage.class}, decoders={MyMessage.class})
 public class MyEndpoint {
