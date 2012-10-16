@@ -40,11 +40,15 @@
 package org.sample;
 
 import javax.net.websocket.annotations.WebSocketEndpoint;
+import javax.net.websocket.annotations.WebSocketMessage;
 
 /**
  * @author Arun Gupta
  */
-@WebSocketEndpoint(path="/endpoint", subprotocols="chat")
+@WebSocketEndpoint(path="/endpoint", subprotocols="myProtocol")
 public class MyEndpoint {
-    
+    @WebSocketMessage
+    public String sayHello(String name) {
+        return "Hello " + name + "!";
+    }
 }
