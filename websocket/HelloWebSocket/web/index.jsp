@@ -60,10 +60,16 @@
 
             function say_hello() {
                 websocket.send(nameField.value);
-                writeToScreen("SENT: " + nameField.value);
+                writeToScreen("SENT (text): " + nameField.value);
+            }
+            
+            function sendBinary() {
+                blob = new Blob([nameField2.value], {type: "application/octet-stream"});
+                websocket.send(blob);
+                writeToScreen("SENT (binary): " + nameField2.value);
             }
 
-            function onOpen(evt) {
+            function onOpen() {
                 writeToScreen("CONNECTED");
             }
 
@@ -90,8 +96,14 @@
 
         <div style="text-align: center;">
             <form action=""> 
+                <h2>Text Data</h2>
                 <input onclick="say_hello()" value="Say Hello" type="button"> 
                 <input id="nameField" name="name" value="WebSocket" type="text"><br>
+            </form>
+            <form action=""> 
+                <h2>Binary Data</h2>
+                <input onclick="sendBinary()" value="Echo" type="button"> 
+                <input id="nameField2" name="name" value="WebSocket" type="text"><br>
             </form>
         </div>
         <div id="output"></div>

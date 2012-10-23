@@ -45,12 +45,25 @@ import javax.net.websocket.annotations.WebSocketMessage;
 /**
  * @author Arun Gupta
  */
-@WebSocketEndpoint(path="/hello")
+@WebSocketEndpoint("/hello")
 public class HelloBean {
     
     @WebSocketMessage
     public String sayHello(String name) {
+        System.out.println("sayHello");
         return "Hello " + name + "!";
     }
+
+    @WebSocketMessage
+    public byte[] sayHello2(byte[] data) {
+        System.out.println("sayHello2");
+        return data;
+    }
+    
+//    @WebSocketMessage
+//    public String sayHello3(String data) {
+//        System.out.println("sayHello3");
+//        return data;
+//    }
     
 }
