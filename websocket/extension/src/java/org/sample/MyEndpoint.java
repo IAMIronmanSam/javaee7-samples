@@ -39,9 +39,7 @@
  */
 package org.sample;
 
-import javax.inject.Inject;
 import javax.net.websocket.Endpoint;
-import javax.net.websocket.ServerContainer;
 import javax.net.websocket.Session;
 
 /**

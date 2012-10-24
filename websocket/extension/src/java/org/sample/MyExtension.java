@@ -39,6 +39,8 @@
  */
 package org.sample;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import javax.net.websocket.extensions.Extension;
 import javax.net.websocket.extensions.FrameHandler;
@@ -55,17 +57,18 @@ public class MyExtension implements Extension {
 
     @Override
     public Map<String, String> getParameters() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Map<String, String> map = new HashMap<>();
+        return Collections.synchronizedMap(map);
     }
 
     @Override
     public FrameHandler createIncomingFrameHandler(FrameHandler fh) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return fh;
     }
 
     @Override
     public FrameHandler createOutgoingFrameHandler(FrameHandler fh) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return fh;
     }
     
 }
