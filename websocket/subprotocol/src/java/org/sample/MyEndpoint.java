@@ -45,7 +45,7 @@ import javax.net.websocket.annotations.WebSocketMessage;
 /**
  * @author Arun Gupta
  */
-@WebSocketEndpoint(path="/endpoint", subprotocols="myProtocol")
+@WebSocketEndpoint(value="/endpoint", subprotocols="myProtocol")
 public class MyEndpoint {
     @WebSocketMessage
     public String sayHello(String name) {
