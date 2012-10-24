@@ -43,9 +43,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.net.websocket.ContainerProvider;
 import javax.net.websocket.DefaultServerConfiguration;
-import javax.net.websocket.ServerConfiguration;
 import javax.net.websocket.ServerContainer;
+import javax.net.websocket.ServerEndpointConfiguration;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -53,17 +54,20 @@ import javax.servlet.annotation.WebListener;
 /**
  * @author Arun Gupta
  */
-@WebListener
+@WebListener("/")
 public class MyEndpointBootstrap implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        System.out.println("contextInitialized: " + sce.getServletContext().getContextPath());
         try {
             HelloBean helloBean = new HelloBean();
-            ServerConfiguration serverConfig = new DefaultServerConfiguration(new URI("/hello"));
-            // TODO: ContainerProvider.getServerContainer() is missing in the current impl ???
-//            ServerContainer serverContainer = ContainerProvider.getServerContainer();
-//            serverContainer.publishServer(helloBean, serverConfig);
+            assert helloBean == null;
+            ServerEndpointConfiguration serverConfig = new DefaultServerConfiguration(new URI("/hello"));
+            assert serverConfig == null;
+            ServerContainer serverContainer = ContainerProvider.getServerContainer();
+            assert serverContainer == null;
+            serverContainer.publishServer(helloBean, serverConfig);
         } catch (URISyntaxException ex) {
             Logger.getLogger(MyEndpointBootstrap.class.getName()).log(Level.SEVERE, null, ex);
         }
