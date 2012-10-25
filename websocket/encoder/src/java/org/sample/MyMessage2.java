@@ -39,43 +39,50 @@
  */
 package org.sample;
 
-import java.io.StringReader;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import javax.net.websocket.DecodeException;
 import javax.net.websocket.Decoder;
 import javax.net.websocket.EncodeException;
 import javax.net.websocket.Encoder;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 /**
  * @author Arun Gupta
  */
-public class MyMessage implements Decoder.Text<MyMessage>, Encoder.Text<MyMessage> {
+public class MyMessage2 implements Decoder.Text<MyMessage2>, Encoder.Text<MyMessage2> {
     
-    private JsonObject jsonObject;
+    private JSONObject jsonObject;
 
     @Override
-    public MyMessage decode(String string) throws DecodeException {
-        System.out.println("decoding: " + string);
-        this.jsonObject = new JsonReader(new StringReader(string)).readObject();
-        
-        System.out.println(jsonObject);
+    public MyMessage2 decode(String string) throws DecodeException {
+        try {
+            System.out.println("decoding: " + string);
+            jsonObject = new JSONObject(string);
+            
+            System.out.println(jsonObject);
+        } catch (JSONException ex) {
+            throw new DecodeException("Error parsing JSON", ex.getMessage(), ex.fillInStackTrace());
+        }
         return this;
     }
 
     @Override
     public boolean willDecode(String string) {
-        return false;
+        return true;
     }
 
     @Override
-    public String encode(MyMessage myMessage) throws EncodeException {
+    public String encode(MyMessage2 myMessage) throws EncodeException {
         return myMessage.jsonObject.toString();
     }
     
     @Override
     public String toString() {
-        return jsonObject.getNames().toString();
+        try {
+            return jsonObject.toString(2);
+        } catch (JSONException ex) {
+            throw new RuntimeException(ex);
+        }
     }
     
 }

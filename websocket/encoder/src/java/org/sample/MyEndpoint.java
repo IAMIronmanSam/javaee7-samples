@@ -39,45 +39,24 @@
  */
 package org.sample;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import javax.net.websocket.EncodeException;
-import javax.net.websocket.Session;
-import javax.net.websocket.annotations.WebSocketClose;
 import javax.net.websocket.annotations.WebSocketEndpoint;
 import javax.net.websocket.annotations.WebSocketMessage;
-import javax.net.websocket.annotations.WebSocketOpen;
 
 /**
  *
  * @author Arun Gupta
  */
-@WebSocketEndpoint(path="/encoder", encoders={MyMessage.class}, decoders={MyMessage.class})
+@WebSocketEndpoint(value = "/encoder", 
+        encoders = {MyMessage.class, MyMessage2.class}, 
+        decoders = {MyMessage.class, MyMessage2.class})
 public class MyEndpoint {
-    
-    Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
-    
-    @WebSocketOpen
-    public void onOpen(Session session) {
-        peers.add(session);
-    }
-
-    @WebSocketClose
-    public void onClose(Session session){
-        peers.remove(session);
-    }
 
     @WebSocketMessage
-    public void messageReceived(String message, Session client) throws IOException, EncodeException {
+    public MyMessage2 messageReceived(MyMessage2 message) {
         System.out.println("messageReceived: " + message);
-        for (Session otherSession : peers) {
-            if (!otherSession.equals(client)) {
-                otherSession.getRemote().sendString(message);
-            }
-        }
+        
+        throw new RuntimeException();
 
+//        return message;
     }
-    
 }
