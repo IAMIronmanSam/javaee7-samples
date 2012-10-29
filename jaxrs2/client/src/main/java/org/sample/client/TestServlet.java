@@ -41,7 +41,6 @@ package org.sample.client;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -49,6 +48,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientFactory;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MultivaluedHashMap;
 
 /**
  * @author Arun Gupta
@@ -73,14 +75,27 @@ public class TestServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");
+            out.println("<title>JAX-RS 2 Client API</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
-            out.println("GETTing...");
+            out.println("<h1>JAX-RS 2 Client API at " + request.getContextPath() + "</h1>");
+            out.println("Initializing client...<br>");
             Client client = ClientFactory.newClient();
-            List<String> list = client.target("http://localhost:8080/client/webresources/resource").request().get(List.class);
-            out.println(list);
+            WebTarget target = client.target("http://localhost:8080/client/webresources/persons");
+            out.print("POSTing...<br>");
+            // POST
+            MultivaluedHashMap<String, String> map = new MultivaluedHashMap<>();
+            map.add("name", "Name");
+            map.add("age", "17");
+            target.request().post(Entity.form(map));
+            out.print("POSTed a new item ...<br>");
+            
+            out.print("GETTing...<br>");
+            Person[] list = target.request().get(Person[].class);
+            out.format("GET %1$s items<br>", list.length);
+            for (Person p : list) {
+                out.print(p + "<br>");
+            }
             out.println("... done.");
             
             out.println("</body>");
