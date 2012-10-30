@@ -51,11 +51,11 @@ public class TestServlet extends HttpServlet {
             JsonGeneratorFactory factory = Json.createGeneratorFactory(new JsonConfiguration().withPrettyPrinting());
             JsonGenerator gen = factory.createGenerator(out);
 //            JsonGenerator gen = factory.createGenerator(System.out);
-            out.println("Creating an empty object (using generator)...<br>");
+            out.println("Creating an empty object (using streaming generator)...<br>");
             gen.beginObject().endObject();
             out.println("<br>...done<br>");
 
-            out.println("Creating a nested structure (using generator)...<br>");
+            out.println("Creating a nested structure (using streaming generator)...<br>");
             gen
                 .beginArray()
                     .beginObject()
