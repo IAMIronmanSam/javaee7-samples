@@ -52,11 +52,14 @@ import javax.jms.Queue;
  */
 @Stateless
 @JMSDestinationDefinition(name = "java:global/jms/myInboundQueue",
-        className = "javax.jms.Queue")
+        resourceAdapterName = "jmsra",
+        className = "javax.jms.Queue",
+        destinationName="myInboundQueue")
 public class JMSClient {
 
     @Inject
     JMSContext context;
+    
     @Resource(lookup = "java:global/jms/myInboundQueue")
     Queue queue;
 
