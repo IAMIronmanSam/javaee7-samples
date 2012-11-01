@@ -70,6 +70,14 @@ public class MyResource {
         return list;
 //        return bean.getPersons().toArray(new Person[0]);
     }
+    
+    @GET
+    @Produces({"application/json", "application/xml"})
+    @Path("{id}")
+    @Logged
+    public Person getPerson(@PathParam("id")String id) {
+        return new Person("Name" + id, Integer.valueOf(id));
+    }
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -81,7 +89,7 @@ public class MyResource {
 
     @PUT
     public void putToList(@FormParam("name") String name, @FormParam("age") int age) {
-        bean.addPerson(new Person(name, age));
+        addToList(name, age);
     }
 
     @DELETE
