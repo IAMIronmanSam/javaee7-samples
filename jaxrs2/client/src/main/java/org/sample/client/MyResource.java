@@ -74,7 +74,6 @@ public class MyResource {
     @GET
     @Produces({"application/json", "application/xml"})
     @Path("{id}")
-    @Logged
     public Person getPerson(@PathParam("id")String id) {
         return new Person("Name" + id, Integer.valueOf(id));
     }
