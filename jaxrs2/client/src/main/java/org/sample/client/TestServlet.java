@@ -90,12 +90,23 @@ public class TestServlet extends HttpServlet {
             target.request().post(Entity.form(map));
             out.print("POSTed a new item ...<br>");
             
+            // GET
             out.print("GETTing...<br>");
             Person[] list = target.request().get(Person[].class);
-            out.format("GET %1$s items<br>", list.length);
+            out.format("GOT %1$s items<br>", list.length);
             for (Person p : list) {
                 out.print(p + "<br>");
             }
+            out.println("... done.");
+            
+            // GET with path param
+            out.print("GETTing with parameter...<br>");
+            Person person = target
+                    .path("{id}")
+                    .resolveTemplate("id", "1")
+                    .request()
+                    .get(Person.class);
+            out.format("GOT person:", person);
             out.println("... done.");
             
             out.println("</body>");
