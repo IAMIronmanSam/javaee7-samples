@@ -51,7 +51,6 @@ public class MyResource {
     private String[] response = { "apple", "banana", "mango" };
     
     @GET
-    @Gzipped
     public String getList() {
         System.out.println("endpoint invoked");
         return response[0];
