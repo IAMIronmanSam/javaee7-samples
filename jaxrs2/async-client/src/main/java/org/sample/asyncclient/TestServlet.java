@@ -51,8 +51,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientException;
 import javax.ws.rs.client.ClientFactory;
+import javax.ws.rs.client.InvocationCallback;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response;
 
 /**
  * @author Arun Gupta
@@ -74,17 +78,38 @@ public class TestServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             response.setContentType("text/html;charset=UTF-8");
-            PrintWriter out = response.getWriter();
+            final PrintWriter out = response.getWriter();
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Servlet TestServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>JAX-RS 2 Async Client</h1>");
             Client client = ClientFactory.newClient();
             WebTarget target = client.target("http://localhost:8080/filter/webresources/fruits");
+            out.println("Invoking Future&lt;Response>...");
+            Future<Response> r = target.request().async().get();
+            out.println("<br>Received response (Future&lt;Response>): " + r.get().readEntity(String.class));
+
+            out.println("<br>Invoking Future&lt;String>...");
             Future<String> result = target.request().async().get(String.class);
-            out.println("Received response: " + result.get());
+            out.println("<br>Received response (Future&lt;String>): " + result.get());
+            
+            out.println("<br>Invoking InvocationCallback&lt;String>...");
+            target.request().async().get(new InvocationCallback<String>() {
+
+                @Override
+                public void completed(String r) {
+                    System.out.println("Received response (InovcationCallback<String>): " + r);
+                }
+
+                @Override
+                public void failed(ClientException ce) {
+                    ce.printStackTrace(out);
+                }
+                
+            });
+            out.print("<br>Check server.log for InvocationCallback&lt;String> results.");
             out.println("</body>");
             out.println("</html>");
         } catch (InterruptedException ex) {
