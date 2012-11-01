@@ -39,6 +39,8 @@
  */
 package org.example;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteBuffer;
 import javax.net.websocket.annotations.WebSocketEndpoint;
 import javax.net.websocket.annotations.WebSocketMessage;
 
@@ -48,15 +50,15 @@ import javax.net.websocket.annotations.WebSocketMessage;
 @WebSocketEndpoint("/hello")
 public class HelloBean {
     
-    @WebSocketMessage
-    public String sayHello(String name) {
-        System.out.println("sayHello");
-        return "Hello " + name + "!";
-    }
+//    @WebSocketMessage
+//    public String sayHelloText(String name) {
+//        System.out.println("sayHello ");
+//        return "Hello " + name + "!";
+//    }
 
     @WebSocketMessage
-    public byte[] sayHello2(byte[] data) {
-        System.out.println("sayHello2");
+    public ByteBuffer sayHelloBinary(ByteBuffer data) {
+        System.out.println("sayHelloBinary");
         return data;
     }
     
