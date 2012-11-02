@@ -55,8 +55,6 @@ public class MyEndpoint {
     public MyMessage2 messageReceived(MyMessage2 message) {
         System.out.println("messageReceived: " + message);
         
-        throw new RuntimeException();
-
-//        return message;
+        return message;
     }
 }

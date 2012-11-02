@@ -58,12 +58,12 @@
                 output = document.getElementById("output");
             }
 
-            function say_hello() {
-                websocket.send(nameField.value);
-                writeToScreen("SENT: " + nameField.value);
+            function echoJson() {
+                websocket.send(dataField.value);
+                writeToScreen("SENT: " + dataField.value);
             }
 
-            function onOpen(evt) {
+            function onOpen() {
                 writeToScreen("CONNECTED");
             }
 
@@ -90,8 +90,8 @@
 
         <div style="text-align: center;">
             <form action=""> 
-                <input onclick="say_hello()" value="Echo JSON" type="button"> 
-                <input id="nameField" name="name" value="WebSocket" type="text"><br>
+                <input onclick="echoJson()" value="Echo JSON" type="button"> 
+                <input id="dataField" name="name" value="{}" type="text"><br>
             </form>
         </div>
         <div id="output"></div>
