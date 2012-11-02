@@ -53,7 +53,7 @@ import javax.net.websocket.annotations.WebSocketOpen;
 /**
  * @author Arun Gupta
  */
-@WebSocketEndpoint(path="/chat")
+@WebSocketEndpoint("/chat")
 public class ChatBean {
     Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
     
@@ -70,9 +70,7 @@ public class ChatBean {
     @WebSocketMessage
     public void message(String message, Session client) throws IOException, EncodeException {
         for (Session peer : peers) {
-//            if (!peer.equals(client)) {
-                peer.getRemote().sendObject(message);
-//            }
+            peer.getRemote().sendObject(message);
         }
     }
 }
