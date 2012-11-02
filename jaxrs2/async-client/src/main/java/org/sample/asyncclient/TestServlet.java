@@ -87,14 +87,18 @@ public class TestServlet extends HttpServlet {
             out.println("<h1>JAX-RS 2 Async Client</h1>");
             Client client = ClientFactory.newClient();
             WebTarget target = client.target("http://localhost:8080/filter/webresources/fruits");
+            
+            // Polling (Response)
             out.println("Invoking Future&lt;Response>...");
             Future<Response> r = target.request().async().get();
             out.println("<br>Received response (Future&lt;Response>): " + r.get().readEntity(String.class));
 
+            // Polling (String)
             out.println("<br>Invoking Future&lt;String>...");
             Future<String> result = target.request().async().get(String.class);
             out.println("<br>Received response (Future&lt;String>): " + result.get());
             
+            // Callback
             out.println("<br>Invoking InvocationCallback&lt;String>...");
             target.request().async().get(new InvocationCallback<String>() {
 
