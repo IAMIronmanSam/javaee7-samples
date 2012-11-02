@@ -49,6 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientFactory;
 import javax.ws.rs.client.WebTarget;
+import org.glassfish.jersey.filter.LoggingFilter;
 
 /**
  * @author Arun Gupta

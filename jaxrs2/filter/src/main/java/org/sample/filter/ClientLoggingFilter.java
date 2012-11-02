@@ -45,32 +45,30 @@ import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.client.ClientResponseContext;
 import javax.ws.rs.client.ClientResponseFilter;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
 
 /**
  * @author Arun Gupta
  */
 @Provider
-@ClientLogged
 public class ClientLoggingFilter implements ClientRequestFilter, ClientResponseFilter {
 
     @Override
     public void filter(ClientRequestContext crc) throws IOException {
-        System.out.println("ClientRequestContext: " + crc.getEntity());
-        MultivaluedMap<String, Object> headers = crc.getHeaders();
-        for (Entry e : headers.entrySet()) {
+        System.out.println("ClientRequestContext<start>");
+        System.out.println(crc.getMethod() + " " + crc.getUri());
+        for (Entry e : crc.getHeaders().entrySet()) {
             System.out.print(e.getKey() + ": " + e.getValue());
         }
+        System.out.println("ClientRequestContext<end>");
     }
 
     @Override
     public void filter(ClientRequestContext crc, ClientResponseContext crc1) throws IOException {
-//        crc1.getEntityStream();
-        System.out.println("ClientResponseContext: " + crc1.getEntityStream());
-        MultivaluedMap<String, String> headers = crc1.getHeaders();
-        for (Entry e : headers.entrySet()) {
+        System.out.println("ClientResponseContext<start>");
+        for (Entry e : crc1.getHeaders().entrySet()) {
             System.out.print(e.getKey() + ": " + e.getValue());
         }
+        System.out.println("ClientResponseContext<end>");
     }
 }

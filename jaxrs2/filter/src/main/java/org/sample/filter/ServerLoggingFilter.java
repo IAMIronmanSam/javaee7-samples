@@ -56,15 +56,21 @@ public class ServerLoggingFilter implements ContainerRequestFilter, ContainerRes
 
     @Override
     public void filter(ContainerRequestContext crc) throws IOException {
-        System.out.println("ContainerRequestFilter.filter: " + crc.getRequest());
+        System.out.println("ContainerRequestFilter.filter<start>");
+        System.out.println(crc.getMethod() + " " + crc.getUriInfo().getAbsolutePath());
+        for (String key : crc.getHeaders().keySet()) {
+            System.out.println(key + ": " + crc.getHeaders().get(key));
+        }
+        System.out.println("ContainerRequestFilter.filter<end>");
     }
 
     @Override
     public void filter(ContainerRequestContext crc, ContainerResponseContext crc1) throws IOException {
-        System.out.println("ContainerResponseFilter.filter: " + crc1.getStringHeaders());
-        for (Entry e : crc1.getStringHeaders().entrySet()) {
-            System.out.println(e.getKey() + ": " + e.getValue());
+        System.out.println("ContainerResponseFilter.filter<start>");
+        for (String key : crc1.getHeaders().keySet()) {
+            System.out.println(key + ": " + crc1.getHeaders().get(key));
         }
+        System.out.println("ContainerResponseFilter.filter<end>");
     }
     
 }
