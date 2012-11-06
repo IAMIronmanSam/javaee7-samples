@@ -41,11 +41,18 @@ package org.sample;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.net.websocket.Session;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.glassfish.tyrus.client.ClientManager;
+import org.glassfish.tyrus.client.DefaultClientEndpointConfiguration;
 
 /**
  * @author Arun Gupta
@@ -75,6 +82,22 @@ public class TestServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
+            try {
+                DefaultClientEndpointConfiguration.Builder builder = new DefaultClientEndpointConfiguration.Builder(new URI("ws://localhost:8080/client/client"));
+                DefaultClientEndpointConfiguration dcec = builder.build();
+                
+                ClientManager client = ClientManager.createClient();
+                
+//                client.connectToServer(new TestEndpointAdapter() {
+//
+//                    @Override
+//                    public void onOpen(Session sn) {
+//                        throw new UnsupportedOperationException("Not supported yet.");
+//                    }
+//                }, dcec);
+            } catch (URISyntaxException ex) {
+                Logger.getLogger(TestServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
             out.println("</body>");
             out.println("</html>");
         } finally {            
