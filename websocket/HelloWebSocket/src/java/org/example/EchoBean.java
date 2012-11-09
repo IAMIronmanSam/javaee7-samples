@@ -39,28 +39,42 @@
  */
 package org.example;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.ByteBuffer;
+import javax.net.websocket.Session;
 import javax.net.websocket.annotations.WebSocketEndpoint;
 import javax.net.websocket.annotations.WebSocketMessage;
 
 /**
  * @author Arun Gupta
  */
-@WebSocketEndpoint("/hello")
-public class HelloBean {
+@WebSocketEndpoint("/echo")
+public class EchoBean {
     
 //    @WebSocketMessage
-//    public String sayHelloText(String name) {
-//        System.out.println("sayHello ");
+//    public String sayHello(String name) {
+//        System.out.println("echoText");
 //        return "Hello " + name + "!";
 //    }
-
+    
     @WebSocketMessage
-    public ByteBuffer sayHelloBinary(ByteBuffer data) {
-        System.out.println("sayHelloBinary");
-        return data;
+    public void sayHelloTwice(String name, Session session) throws IOException {
+        System.out.println("echoTextTwice");
+        session.getRemote().sendString("Hello " + name + "! (void-1)");
+        session.getRemote().sendString("Hello " + name + "! (void-2)");
     }
+
+//    @WebSocketMessage
+//    public ByteBuffer echoBinary(ByteBuffer data) {
+//        System.out.println("sayHelloBinary");
+//        return data;
+//    }
+    
+//    @WebSocketMessage
+//    public byte[] echoBinary2(byte[] data) {
+//        System.out.println("sayHelloBinary");
+//        return data;
+//    }
     
 //    @WebSocketMessage
 //    public String sayHello3(String data) {
