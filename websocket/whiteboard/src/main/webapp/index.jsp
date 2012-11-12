@@ -92,7 +92,8 @@
             </tr>
         </table>
     </form>
-    <script type="text/javascript" src="script.js"></script>
+    <div id="output"></div>
+    <script type="text/javascript" src="whiteboard.js"></script>
     <script type="text/javascript" src="websocket.js"></script>
 
 </body>

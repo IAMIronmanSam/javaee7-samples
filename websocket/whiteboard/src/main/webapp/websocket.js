@@ -40,43 +40,42 @@
 
 var wsUri = "ws://localhost:8080/whiteboard/websocket";
 var websocket = new WebSocket(wsUri);
+var output = document.getElementById("output");
 websocket.onopen = function(evt) { onOpen(evt) };
 websocket.onmessage = function(evt) { onMessage(evt) };
 websocket.onerror = function(evt) { onError(evt) };
 
 function init() {
-    output = document.getElementById("output");
+    
 }
 
-function echoText() {
+function sendText() {
     websocket.send(myField.value);
 }
 
-function echoBinary() {
-//                alert("Sending " + myField2.value.length + " bytes")
+function sendBinary() {
     var buffer = new ArrayBuffer(myField2.value.length);
     var bytes = new Uint8Array(buffer);
     for (var i=0; i<bytes.length; i++) {
         bytes[i] = i;
     }
-//                alert(buffer);
     websocket.send(buffer);
-    writeToScreen("SENT (binary): " + buffer.byteLength + " bytes");
+//    writeToScreen("SENT (binary): " + buffer.byteLength + " bytes");
 }
 
-function echoBinary2() {
+function sendBinary2() {
 //                blob = new Blob([myField2.value], {type: "application/octet-stream"});
     blob = new Blob([myField2.value]);
     websocket.send(blob);
-    writeToScreen("SENT (binary): " + myField2.value);
+//    writeToScreen("SENT (binary): " + myField2.value);
 }
 
 function onOpen() {
-    writeToScreen("CONNECTED");
+//    writeToScreen("CONNECTED");
 }
 
 function onMessage(evt) {
-    writeToScreen("RECEIVED: " + evt.data);
+//    writeToScreen("RECEIVED: " + evt.data);
 }
 
 function onError(evt) {
@@ -90,4 +89,4 @@ function writeToScreen(message) {
     output.appendChild(pre);
 }
 
-window.addEventListener("load", init, false);
+//window.addEventListener("load", init, false);
