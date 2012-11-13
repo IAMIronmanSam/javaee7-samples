@@ -1,4 +1,3 @@
-<%-- 
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -38,63 +37,38 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
---%>
+package org.sample.whiteboard;
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+import javax.net.websocket.DecodeException;
+import javax.net.websocket.Decoder;
+import javax.net.websocket.EncodeException;
+import javax.net.websocket.Encoder;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>White Board</title>
-    </head>
-    <body>
-        <h1>White Board</h1>
-    <canvas id="myCanvas" width="300" height="300" style="border:1px solid #000000;"></canvas>
-    <form name="inputForm">
-        <table>
+/**
+ * @author Arun Gupta
+ */
+public class FigureDecoderEncoder implements Decoder.Text<Figure>, Encoder.Text<Figure> {
+    
+    @Override
+    public Figure decode(String string) throws DecodeException {
+        try {
+            System.out.println("decoding: " + string);
+            JSONObject jsonObject = new JSONObject(string);
+            return new Figure(jsonObject);
+        } catch (JSONException ex) {
+            throw new DecodeException("Error parsing JSON", ex.getMessage(), ex.fillInStackTrace());
+        }
+    }
 
-            <tr>
-                <th>Color</th>
-                <td>
-                    <input type="radio" name="color" value="#FF0000" checked="true">Red
-                </td>
-                <td>
-                    <input type="radio" name="color" value="#0000FF">Blue
-                </td>
-                <td>
-                    <input type="radio" name="color" value="#FFFF00">Yellow
-                </td>
-                <td>
-                    <input type="radio" name="color" value="#00FF00">Green
-                </td>
-            </tr>
+    @Override
+    public boolean willDecode(String string) {
+        return true;
+    }
 
-            <tr>
-                <th>Shape</th>
-                <td>
-                    <input type="radio" name="shape" value="rectangle" checked="true">Rectangle
-                </td>
-                <td>
-                    <input type="radio" name="shape" value="circle">Circle
-                </td>
-            </tr>
-
-            <tr>
-                <th>Format</th>
-                <td>
-                    <input type="radio" name="format" value="text" checked="true">Text
-                </td>
-                <td>
-                    <input type="radio" name="format" value="binary">Binary
-                </td>
-            </tr>
-        </table>
-    </form>
-    <div id="output"></div>
-    <script type="text/javascript" src="websocket.js"></script>
-    <script type="text/javascript" src="whiteboard.js"></script>
-
-</body>
-</html>
+    @Override
+    public String encode(Figure figure) throws EncodeException {
+        return figure.getJson().toString();
+    }
+}

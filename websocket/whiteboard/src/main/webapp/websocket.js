@@ -49,8 +49,9 @@ function init() {
     
 }
 
-function sendText() {
-    websocket.send(myField.value);
+function sendText(json) {
+//    alert(json);
+    websocket.send(json);
 }
 
 function sendBinary() {
@@ -75,6 +76,8 @@ function onOpen() {
 }
 
 function onMessage(evt) {
+//    alert("received: " + evt.data);
+    drawImage(evt.data);
 //    writeToScreen("RECEIVED: " + evt.data);
 }
 

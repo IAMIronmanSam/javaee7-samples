@@ -42,7 +42,7 @@
 //alert('script.js');
 var canvas = document.getElementById("myCanvas");
 var context = canvas.getContext("2d");
-canvas.addEventListener("click", drawImage, false);
+canvas.addEventListener("click", defineImage, false);
             
 function init() {
 }
@@ -55,29 +55,60 @@ function getCurrentPos(evt) {
     };
 }
             
-function drawImage(evt) {
+function defineImage(evt) {
     var currentPos = getCurrentPos(evt);
+    
     for (i = 0; i <document.inputForm.color.length; i++) {
         if (document.inputForm.color[i].checked) {
-            context.fillStyle = document.inputForm.color[i].value;
+            color = document.inputForm.color[i];
+            break;
         }
     }
             
     for (i = 0; i < document.inputForm.shape.length; i++) {
         if (document.inputForm.shape[i].checked) {
-//            alert(document.inputForm.shape[i].value);
-            switch (document.inputForm.shape[i].value) {
-                case "circle":
-                    context.beginPath();
-                    context.arc(currentPos.x, currentPos.y, 25, 0, 2 * Math.PI, false);
-                    context.fill();
-                    //                            context.stroke();
+            shape = document.inputForm.shape[i];
+            break;
+        }
+    }
+    
+    for (i = 0; i< document.inputForm.format.length; i++) {
+        if (document.inputForm.format[i].checked) {
+            switch (document.inputForm.format[i].value) {
+                case "binary":
                     break;
-                case "rectangle":
+                case "text":
                 default:
-                    context.fillRect(currentPos.x, currentPos.y, 50, 50);
+                    json = JSON.stringify({
+                        "shape": shape.value,
+                        "color": color.value,
+                        "coords": {
+                            "x": currentPos.x,
+                            "y": currentPos.y
+                        }
+                    });
+                    drawImage(json);
+                    sendText(json);
                     break;
             }
         }
     }
 }
+
+function drawImage(json) {
+    json2 = JSON.parse(json);
+//    alert("shape: " + json2.shape);
+    context.fillStyle = json2.color;
+    switch (json2.shape) {
+    case "circle":
+        context.beginPath();
+        context.arc(json2.coords.x, json2.coords.y, 25, 0, 2 * Math.PI, false);
+        context.fill();
+        break;
+    case "rectangle":
+    default:
+        context.fillRect(json2.coords.x, json2.coords.y, 50, 50);
+        break;
+    }
+}
+

@@ -41,28 +41,66 @@ package org.sample.whiteboard;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import javax.net.websocket.EncodeException;
 import javax.net.websocket.Session;
+import javax.net.websocket.annotations.WebSocketClose;
 import javax.net.websocket.annotations.WebSocketEndpoint;
 import javax.net.websocket.annotations.WebSocketMessage;
+import javax.net.websocket.annotations.WebSocketOpen;
 
 /**
  * @author Arun Gupta
  */
-@WebSocketEndpoint("websocket")
+@WebSocketEndpoint(value="websocket", 
+        encoders={FigureDecoderEncoder.class},
+        decoders={FigureDecoderEncoder.class})
 public class Whiteboard {
     
-    @WebSocketMessage
-    public String echoText(String name) {
-        System.out.println("echoText");
-        return "Hello " + name + "!";
+    Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
+    
+    @WebSocketOpen
+    public void onOpen(Session peer) {
+        peers.add(peer);
     }
     
-    @WebSocketMessage
-    public void echoBinary(ByteBuffer data, Session session) throws IOException {
-        System.out.println("echoBinary: " + data);
-        for (byte b : data.array()) {
-            System.out.print(b);
-        }
-        session.getRemote().sendBytes(data);
+    @WebSocketClose
+    public void onClose(Session peer) {
+        peers.remove(peer);
     }
+    
+//    @WebSocketMessage
+//    public String echoText(String name) {
+//        System.out.println("echoText");
+//        return "Hello " + name + "!";
+//    }
+    
+    @WebSocketMessage
+    public void echoFigure(Figure figure, Session session) throws IOException, EncodeException {
+        System.out.println("echoFigure: " + figure);
+        for (Session peer : peers) {
+            if (!peer.equals(session))
+                peer.getRemote().sendObject(figure);
+        }
+    }
+    
+//    @WebSocketMessage
+//    public void echoText(Figure figure) throws IOException, EncodeException {
+//        System.out.println("echoFigure");
+//        for (Session peer : peers) {
+//            peer.getRemote().sendObject(figure);
+//        }
+////        return "Hello " + name + "!";
+//    }
+    
+//    @WebSocketMessage
+//    public void echoBinary(ByteBuffer data, Session session) throws IOException {
+//        System.out.println("echoBinary: " + data);
+//        for (byte b : data.array()) {
+//            System.out.print(b);
+//        }
+//        session.getRemote().sendBytes(data);
+//    }
 }
