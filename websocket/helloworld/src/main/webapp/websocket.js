@@ -37,61 +37,60 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package org.sample.helloworld;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import javax.net.websocket.Session;
-import javax.net.websocket.annotations.WebSocketEndpoint;
-import javax.net.websocket.annotations.WebSocketMessage;
+var wsUri = "ws://localhost:8080/helloworld/echo";
+var websocket = new WebSocket(wsUri);
+websocket.onopen = function(evt) { onOpen(evt) };
+websocket.onmessage = function(evt) { onMessage(evt) };
+websocket.onerror = function(evt) { onError(evt) };
 
-/**
- * @author Arun Gupta
- */
-@WebSocketEndpoint("/echo")
-public class EchoBean {
-    
-    @WebSocketMessage
-    public String sayHello(String name) {
-        System.out.println("echoText");
-        return "Hello " + name + "!";
-    }
-    
-//    @WebSocketMessage
-//    public void sayHelloTwice(String name, Session session) throws IOException {
-//        System.out.println("echoTextTwice");
-//        session.getRemote().sendString("Hello " + name + "! (void-1)");
-//        session.getRemote().sendString("Hello " + name + "! (void-2)");
-//    }
+var output = document.getElementById("output");
 
-//    @WebSocketMessage
-//    public ByteBuffer echoBinary(ByteBuffer data) {
-//        System.out.println("echoBinary: " + data);
-//        for (byte b : data.array()) {
-//            System.out.print(b);
-//        }
-//        return data;
-//    }
-
-    @WebSocketMessage
-    public void echoBinary(ByteBuffer data, Session session) throws IOException {
-        System.out.println("echoBinary: " + data);
-        for (byte b : data.array()) {
-            System.out.print(b);
-        }
-        session.getRemote().sendBytes(data);
-    }
-
-//    @WebSocketMessage
-//    public byte[] echoBinary2(byte[] data) {
-//        System.out.println("sayHelloBinary");
-//        return data;
-//    }
-    
-//    @WebSocketMessage
-//    public String sayHello3(String data) {
-//        System.out.println("sayHello3");
-//        return data;
-//    }
+function init() {
     
 }
+
+function echoText() {
+    websocket.send(myField.value);
+    writeToScreen("SENT (text): " + myField.value);
+}
+
+function echoBinary() {
+//                alert("Sending " + myField2.value.length + " bytes")
+    var buffer = new ArrayBuffer(myField2.value.length);
+    var bytes = new Uint8Array(buffer);
+    for (var i=0; i<bytes.length; i++) {
+        bytes[i] = i;
+    }
+//                alert(buffer);
+    websocket.send(buffer);
+    writeToScreen("SENT (binary): " + buffer.byteLength + " bytes");
+}
+
+function echoBinary2() {
+//                blob = new Blob([myField2.value], {type: "application/octet-stream"});
+    blob = new Blob([myField2.value]);
+    websocket.send(blob);
+    writeToScreen("SENT (binary): " + myField2.value);
+}
+
+function onOpen() {
+    writeToScreen("CONNECTED");
+}
+
+function onMessage(evt) {
+    writeToScreen("RECEIVED: " + evt.data);
+}
+
+function onError(evt) {
+    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
+
+function writeToScreen(message) {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = message;
+    output.appendChild(pre);
+}
+
+//window.addEventListener("load", init, false);
