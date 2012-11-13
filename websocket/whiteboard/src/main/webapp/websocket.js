@@ -45,20 +45,21 @@ websocket.onopen = function(evt) { onOpen(evt) };
 websocket.onmessage = function(evt) { onMessage(evt) };
 websocket.onerror = function(evt) { onError(evt) };
 
-function init() {
-    
-}
 
 function sendText(json) {
 //    alert(json);
     websocket.send(json);
 }
 
-function sendBinary() {
-    var buffer = new ArrayBuffer(myField2.value.length);
-    var bytes = new Uint8Array(buffer);
-    for (var i=0; i<bytes.length; i++) {
-        bytes[i] = i;
+function sendBinary(bytes) {
+    if (bytes == null) {
+        buffer = new ArrayBuffer(myField2.value.length);
+        var bytes = new Uint8Array(buffer);
+        for (var i=0; i<bytes.length; i++) {
+            bytes[i] = i;
+        }
+    } else {
+        buffer = bytes;
     }
     websocket.send(buffer);
 //    writeToScreen("SENT (binary): " + buffer.byteLength + " bytes");
@@ -76,7 +77,7 @@ function onOpen() {
 }
 
 function onMessage(evt) {
-//    alert("received: " + evt.data);
+    alert("received: " + evt.data);
     drawImage(evt.data);
 //    writeToScreen("RECEIVED: " + evt.data);
 }
@@ -91,5 +92,3 @@ function writeToScreen(message) {
     pre.innerHTML = message;
     output.appendChild(pre);
 }
-
-//window.addEventListener("load", init, false);

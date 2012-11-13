@@ -76,6 +76,14 @@ function defineImage(evt) {
         if (document.inputForm.format[i].checked) {
             switch (document.inputForm.format[i].value) {
                 case "binary":
+                    image = context.getImageData(0, 0, canvas.width, canvas.height);
+//                    pixels = image.data;
+                    buffer = new ArrayBuffer(image.data.length);
+                    bytes = new Uint8Array(buffer);
+                    for (var i=0; i<bytes.length; i++) {
+                        bytes[i] = image.data[i];
+                    }
+                    sendBinary(buffer);
                     break;
                 case "text":
                 default:
@@ -96,6 +104,7 @@ function defineImage(evt) {
 }
 
 function drawImage(json) {
+    alert('drawImage');
     json2 = JSON.parse(json);
 //    alert("shape: " + json2.shape);
     context.fillStyle = json2.color;

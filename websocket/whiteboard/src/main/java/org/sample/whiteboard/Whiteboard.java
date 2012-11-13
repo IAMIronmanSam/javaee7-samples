@@ -95,12 +95,12 @@ public class Whiteboard {
 ////        return "Hello " + name + "!";
 //    }
     
-//    @WebSocketMessage
-//    public void echoBinary(ByteBuffer data, Session session) throws IOException {
-//        System.out.println("echoBinary: " + data);
-//        for (byte b : data.array()) {
-//            System.out.print(b);
-//        }
-//        session.getRemote().sendBytes(data);
-//    }
+    @WebSocketMessage
+    public void echoBinary(ByteBuffer data, Session session) throws IOException {
+        System.out.println("echoBinary: " + data);
+        for (Session peer : peers) {
+            if (!peer.equals(session))
+                peer.getRemote().sendBytes(data);
+        }
+    }
 }
