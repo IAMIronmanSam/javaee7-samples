@@ -37,45 +37,41 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package org.sample;
 
-import java.io.StringReader;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.net.websocket.DecodeException;
-import javax.net.websocket.Decoder;
-import javax.net.websocket.EncodeException;
-import javax.net.websocket.Encoder;
+var wsUri = "ws://localhost:8080/encoder/encoder";
+var websocket = new WebSocket(wsUri);
+websocket.onopen = function(evt) { onOpen(evt) };
+websocket.onmessage = function(evt) { onMessage(evt) };
+websocket.onerror = function(evt) { onError(evt) };
 
-/**
- * @author Arun Gupta
- */
-public class MyMessage implements Decoder.Text<MyMessage>, Encoder.Text<MyMessage> {
-    
-    private JsonObject jsonObject;
+var output = document.getElementById("output");
 
-    @Override
-    public MyMessage decode(String string) throws DecodeException {
-        System.out.println("decoding: " + string);
-        this.jsonObject = new JsonReader(new StringReader(string)).readObject();
-        
-        System.out.println(jsonObject);
-        return this;
-    }
+//function init() {
+//    
+//}
 
-    @Override
-    public boolean willDecode(String string) {
-        return false;
-    }
-
-    @Override
-    public String encode(MyMessage myMessage) throws EncodeException {
-        return myMessage.jsonObject.toString();
-    }
-    
-    @Override
-    public String toString() {
-        return jsonObject.getNames().toString();
-    }
-    
+function echoJson() {
+    websocket.send(dataField.value);
+    writeToScreen("SENT: " + dataField.value);
 }
+
+function onOpen() {
+    writeToScreen("CONNECTED");
+}
+
+function onMessage(evt) {
+    writeToScreen("RECEIVED: " + evt.data);
+}
+
+function onError(evt) {
+    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
+
+function writeToScreen(message) {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = message;
+    output.appendChild(pre);
+}
+
+//window.addEventListener("load", init, false);

@@ -37,52 +37,24 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package org.sample;
+package org.sample.encoder;
 
-import javax.net.websocket.DecodeException;
-import javax.net.websocket.Decoder;
-import javax.net.websocket.EncodeException;
-import javax.net.websocket.Encoder;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+import javax.net.websocket.annotations.WebSocketEndpoint;
+import javax.net.websocket.annotations.WebSocketMessage;
 
 /**
+ *
  * @author Arun Gupta
  */
-public class MyMessage2 implements Decoder.Text<MyMessage2>, Encoder.Text<MyMessage2> {
-    
-    private JSONObject jsonObject;
+@WebSocketEndpoint(value = "/encoder", 
+        encoders = {MyMessage.class, MyMessage2.class}, 
+        decoders = {MyMessage.class, MyMessage2.class})
+public class MyEndpoint {
 
-    @Override
-    public MyMessage2 decode(String string) throws DecodeException {
-        try {
-            System.out.println("decoding: " + string);
-            jsonObject = new JSONObject(string);
-            
-            System.out.println(jsonObject);
-        } catch (JSONException ex) {
-            throw new DecodeException("Error parsing JSON", ex.getMessage(), ex.fillInStackTrace());
-        }
-        return this;
+    @WebSocketMessage
+    public MyMessage2 messageReceived(MyMessage2 message) {
+        System.out.println("messageReceived: " + message);
+        
+        return message;
     }
-
-    @Override
-    public boolean willDecode(String string) {
-        return true;
-    }
-
-    @Override
-    public String encode(MyMessage2 myMessage) throws EncodeException {
-        return myMessage.jsonObject.toString();
-    }
-    
-    @Override
-    public String toString() {
-        try {
-            return jsonObject.toString(2);
-        } catch (JSONException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-    
 }

@@ -1,4 +1,3 @@
-<%-- 
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -38,62 +37,52 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
---%>
+package org.sample.encoder;
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+import javax.net.websocket.DecodeException;
+import javax.net.websocket.Decoder;
+import javax.net.websocket.EncodeException;
+import javax.net.websocket.Encoder;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
-        <script language="javascript" type="text/javascript">
-            var wsUri = "ws://localhost:8080/encoder/encoder";
-            var websocket = new WebSocket(wsUri);
-            websocket.onopen = function(evt) { onOpen(evt) };
-            websocket.onmessage = function(evt) { onMessage(evt) };
-            websocket.onerror = function(evt) { onError(evt) };
+/**
+ * @author Arun Gupta
+ */
+public class MyMessage2 implements Decoder.Text<MyMessage2>, Encoder.Text<MyMessage2> {
+    
+    private JSONObject jsonObject;
 
-            function init() {
-                output = document.getElementById("output");
-            }
+    @Override
+    public MyMessage2 decode(String string) throws DecodeException {
+        try {
+            System.out.println("decoding: " + string);
+            jsonObject = new JSONObject(string);
+            
+            System.out.println(jsonObject);
+        } catch (JSONException ex) {
+            throw new DecodeException("Error parsing JSON", ex.getMessage(), ex.fillInStackTrace());
+        }
+        return this;
+    }
 
-            function echoJson() {
-                websocket.send(dataField.value);
-                writeToScreen("SENT: " + dataField.value);
-            }
+    @Override
+    public boolean willDecode(String string) {
+        return true;
+    }
 
-            function onOpen() {
-                writeToScreen("CONNECTED");
-            }
-
-            function onMessage(evt) {
-                writeToScreen("RECEIVED: " + evt.data);
-            }
-
-            function onError(evt) {
-                writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
-            }
-
-            function writeToScreen(message) {
-                var pre = document.createElement("p");
-                pre.style.wordWrap = "break-word";
-                pre.innerHTML = message;
-                output.appendChild(pre);
-            }
-
-            window.addEventListener("load", init, false);
-        </script>
-    </head>
-    <body>
-        <h1>WebSocket - Encoder and Decoder</h1>
-
-        <div style="text-align: center;">
-            <form action=""> 
-                <input onclick="echoJson()" value="Echo JSON" type="button"> 
-                <input id="dataField" name="name" value="{}" type="text"><br>
-            </form>
-        </div>
-        <div id="output"></div>
-    </body>
-</html>
+    @Override
+    public String encode(MyMessage2 myMessage) throws EncodeException {
+        return myMessage.jsonObject.toString();
+    }
+    
+    @Override
+    public String toString() {
+        try {
+            return jsonObject.toString(2);
+        } catch (JSONException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    
+}

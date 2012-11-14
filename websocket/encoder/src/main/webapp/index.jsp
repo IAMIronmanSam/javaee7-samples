@@ -1,3 +1,4 @@
+<%-- 
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -37,24 +38,30 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package org.sample;
+--%>
 
-import javax.net.websocket.annotations.WebSocketEndpoint;
-import javax.net.websocket.annotations.WebSocketMessage;
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
 
-/**
- *
- * @author Arun Gupta
- */
-@WebSocketEndpoint(value = "/encoder", 
-        encoders = {MyMessage.class, MyMessage2.class}, 
-        decoders = {MyMessage.class, MyMessage2.class})
-public class MyEndpoint {
-
-    @WebSocketMessage
-    public MyMessage2 messageReceived(MyMessage2 message) {
-        System.out.println("messageReceived: " + message);
         
-        return message;
-    }
-}
+    </head>
+    <body>
+        <h1>WebSocket - Encoder and Decoder</h1>
+
+        <div style="text-align: center;">
+            <form action=""> 
+                <input onclick="echoJson()" value="Echo JSON" type="button"> 
+                <input id="dataField" name="name" value="{}" type="text"><br>
+            </form>
+        </div>
+        <div id="output"></div>
+        
+        <script language="javascript" type="text/javascript" src="websocket.js">
+            
+        </script>
+    </body>
+</html>
