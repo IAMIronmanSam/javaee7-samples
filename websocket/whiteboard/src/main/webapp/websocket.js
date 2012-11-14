@@ -77,8 +77,12 @@ function onOpen() {
 }
 
 function onMessage(evt) {
-    alert("received: " + evt.data);
-    drawImage(evt.data);
+//    alert("received: " + evt.data);
+    if (typeof evt.data == "string") {
+        drawImageText(evt.data);
+    } else {
+        drawImageBinary(evt.data);
+    }
 //    writeToScreen("RECEIVED: " + evt.data);
 }
 

@@ -73,7 +73,7 @@ function defineImage(evt) {
     for (i = 0; i< document.inputForm.format.length; i++) {
         
         if (document.inputForm.format[i].checked) {
-            alert(document.inputForm.format[i].value);
+//            alert(document.inputForm.format[i].value);
             switch (document.inputForm.format[i].value) {
                 case "binary":
                     var image = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -84,6 +84,7 @@ function defineImage(evt) {
                         bytes[i] = image.data[i];
                     }
                     sendBinary(buffer);
+//                    drawImageBinary(buffer);
                     break;
                 case "text":
                 default:
@@ -96,34 +97,32 @@ function defineImage(evt) {
                         }
                     });
                     sendText(json);
-                    drawImage(json);
+                    drawImageText(json);
                     break;
             }
         }
     }
 }
 
-function drawImage(image) {
-    alert('drawImage: ' + image);
+function drawImageText(image) {
     var json = JSON.parse(image);
-    alert('parsing done');
-    if (json != null) {
-        alert("drawImage(json)")
-//        alert("shape: " + json2.shape);
-        context.fillStyle = json.color;
-        switch (json.shape) {
-        case "circle":
-            context.beginPath();
-            context.arc(json.coords.x, json.coords.y, 25, 0, 2 * Math.PI, false);
-            context.fill();
-            break;
-        case "rectangle":
-        default:
-            context.fillRect(json.coords.x, json.coords.y, 50, 50);
-            break;
-        }
-    } else {
-        alert('drawImage(blob)');
+//    alert("shape: " + json2.shape);
+    context.fillStyle = json.color;
+    switch (json.shape) {
+    case "circle":
+        context.beginPath();
+        context.arc(json.coords.x, json.coords.y, 25, 0, 2 * Math.PI, false);
+        context.fill();
+        break;
+    case "rectangle":
+    default:
+        context.fillRect(json.coords.x, json.coords.y, 50, 50);
+        break;
     }
+}
+
+function drawImageBinary(image) {
+//    alert(typeof image == "object");
+    alert('drawImageBinary: ' + image);
 }
 
