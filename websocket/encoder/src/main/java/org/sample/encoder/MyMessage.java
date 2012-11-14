@@ -40,8 +40,8 @@
 package org.sample.encoder;
 
 import java.io.StringReader;
-//import javax.json.JsonObject;
-//import javax.json.JsonReader;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.net.websocket.DecodeException;
 import javax.net.websocket.Decoder;
 import javax.net.websocket.EncodeException;
@@ -52,14 +52,14 @@ import javax.net.websocket.Encoder;
  */
 public class MyMessage implements Decoder.Text<MyMessage>, Encoder.Text<MyMessage> {
     
-//    private JsonObject jsonObject;
+    private JsonObject jsonObject;
 
     @Override
     public MyMessage decode(String string) throws DecodeException {
         System.out.println("decoding: " + string);
-//        this.jsonObject = new JsonReader(new StringReader(string)).readObject();
-//        
-//        System.out.println(jsonObject);
+        this.jsonObject = new JsonReader(new StringReader(string)).readObject();
+        
+        System.out.println(jsonObject);
         return this;
     }
 
@@ -70,14 +70,14 @@ public class MyMessage implements Decoder.Text<MyMessage>, Encoder.Text<MyMessag
 
     @Override
     public String encode(MyMessage myMessage) throws EncodeException {
-        return this.getClass().getName();
-//        return myMessage.jsonObject.toString();
+//        return this.getClass().getName();
+        return myMessage.jsonObject.toString();
     }
     
     @Override
     public String toString() {
-        return this.getClass().getName();
-//        return jsonObject.getNames().toString();
+//        return this.getClass().getName();
+        return jsonObject.getNames().toString();
     }
     
 }
