@@ -47,13 +47,13 @@ websocket.onerror = function(evt) { onError(evt) };
 
 
 function sendText(json) {
-//    alert(json);
+//    alert("sendText: " + json);
     websocket.send(json);
 }
 
 function sendBinary(bytes) {
     if (bytes == null) {
-        buffer = new ArrayBuffer(myField2.value.length);
+        var buffer = new ArrayBuffer(myField2.value.length);
         var bytes = new Uint8Array(buffer);
         for (var i=0; i<bytes.length; i++) {
             bytes[i] = i;
@@ -67,7 +67,7 @@ function sendBinary(bytes) {
 
 function sendBinary2() {
 //                blob = new Blob([myField2.value], {type: "application/octet-stream"});
-    blob = new Blob([myField2.value]);
+    var blob = new Blob([myField2.value]);
     websocket.send(blob);
 //    writeToScreen("SENT (binary): " + myField2.value);
 }

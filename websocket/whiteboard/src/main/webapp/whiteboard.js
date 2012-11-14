@@ -44,9 +44,6 @@ var canvas = document.getElementById("myCanvas");
 var context = canvas.getContext("2d");
 canvas.addEventListener("click", defineImage, false);
             
-function init() {
-}
-            
 function getCurrentPos(evt) {
     var rect = canvas.getBoundingClientRect();
     return {
@@ -60,26 +57,29 @@ function defineImage(evt) {
     
     for (i = 0; i <document.inputForm.color.length; i++) {
         if (document.inputForm.color[i].checked) {
-            color = document.inputForm.color[i];
+            var color = document.inputForm.color[i];
             break;
         }
     }
             
     for (i = 0; i < document.inputForm.shape.length; i++) {
         if (document.inputForm.shape[i].checked) {
-            shape = document.inputForm.shape[i];
+            var shape = document.inputForm.shape[i];
             break;
         }
     }
     
+//    alert(document.inputForm.format.length);
     for (i = 0; i< document.inputForm.format.length; i++) {
+        
         if (document.inputForm.format[i].checked) {
+            alert(document.inputForm.format[i].value);
             switch (document.inputForm.format[i].value) {
                 case "binary":
-                    image = context.getImageData(0, 0, canvas.width, canvas.height);
+                    var image = context.getImageData(0, 0, canvas.width, canvas.height);
 //                    pixels = image.data;
-                    buffer = new ArrayBuffer(image.data.length);
-                    bytes = new Uint8Array(buffer);
+                    var buffer = new ArrayBuffer(image.data.length);
+                    var bytes = new Uint8Array(buffer);
                     for (var i=0; i<bytes.length; i++) {
                         bytes[i] = image.data[i];
                     }
@@ -87,7 +87,7 @@ function defineImage(evt) {
                     break;
                 case "text":
                 default:
-                    json = JSON.stringify({
+                    var json = JSON.stringify({
                         "shape": shape.value,
                         "color": color.value,
                         "coords": {
@@ -95,29 +95,35 @@ function defineImage(evt) {
                             "y": currentPos.y
                         }
                     });
-                    drawImage(json);
                     sendText(json);
+                    drawImage(json);
                     break;
             }
         }
     }
 }
 
-function drawImage(json) {
-    alert('drawImage');
-    json2 = JSON.parse(json);
-//    alert("shape: " + json2.shape);
-    context.fillStyle = json2.color;
-    switch (json2.shape) {
-    case "circle":
-        context.beginPath();
-        context.arc(json2.coords.x, json2.coords.y, 25, 0, 2 * Math.PI, false);
-        context.fill();
-        break;
-    case "rectangle":
-    default:
-        context.fillRect(json2.coords.x, json2.coords.y, 50, 50);
-        break;
+function drawImage(image) {
+    alert('drawImage: ' + image);
+    var json = JSON.parse(image);
+    alert('parsing done');
+    if (json != null) {
+        alert("drawImage(json)")
+//        alert("shape: " + json2.shape);
+        context.fillStyle = json.color;
+        switch (json.shape) {
+        case "circle":
+            context.beginPath();
+            context.arc(json.coords.x, json.coords.y, 25, 0, 2 * Math.PI, false);
+            context.fill();
+            break;
+        case "rectangle":
+        default:
+            context.fillRect(json.coords.x, json.coords.y, 50, 50);
+            break;
+        }
+    } else {
+        alert('drawImage(blob)');
     }
 }
 

@@ -65,9 +65,13 @@ public class FigureDecoderEncoder implements Decoder.Text<Figure>, Encoder.Text<
     @Override
     public boolean willDecode(String string) {
         try {
+            System.out.println("willDecode: " + string);
             new JSONObject(string);
+            System.out.println("returning true");
             return true;
         } catch (JSONException ex) {
+            ex.printStackTrace();
+            System.out.println("returning false");
             return false;
         }
     }
