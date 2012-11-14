@@ -64,7 +64,12 @@ public class FigureDecoderEncoder implements Decoder.Text<Figure>, Encoder.Text<
 
     @Override
     public boolean willDecode(String string) {
-        return true;
+        try {
+            new JSONObject(string);
+            return true;
+        } catch (JSONException ex) {
+            return false;
+        }
     }
 
     @Override
