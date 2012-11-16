@@ -1,4 +1,3 @@
-<%-- 
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -38,62 +37,35 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
---%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+var wsUri = "ws://localhost:8080/subprotocol/endpoint";
+var websocket = new WebSocket(wsUri, "myProtocol");
+websocket.onopen = function(evt) { onOpen(evt) };
+websocket.onmessage = function(evt) { onMessage(evt) };
+websocket.onerror = function(evt) { onError(evt) };
 
-        <script language="javascript" type="text/javascript">
-            var wsUri = "ws://localhost:8080/subprotocol/endpoint";
-            var websocket = new WebSocket(wsUri, "myProtocol");
-            websocket.onopen = function(evt) { onOpen(evt) };
-            websocket.onmessage = function(evt) { onMessage(evt) };
-            websocket.onerror = function(evt) { onError(evt) };
+var output = document.getElementById("output");
 
-            function init() {
-                output = document.getElementById("output");
-            }
+function echoText() {
+    websocket.send(myField.value);
+    writeToScreen("SENT (text): " + myField.value);
+}
 
-            function say_hello() {
-                websocket.send(nameField.value);
-                writeToScreen("SENT: " + nameField.value);
-            }
+function onOpen() {
+    writeToScreen("CONNECTED");
+}
 
-            function onOpen(evt) {
-                writeToScreen("CONNECTED");
-            }
+function onMessage(evt) {
+    writeToScreen("RECEIVED: " + evt.data);
+}
 
-            function onMessage(evt) {
-                writeToScreen("RECEIVED: " + evt.data);
-            }
+function onError(evt) {
+    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
 
-            function onError(evt) {
-                writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
-            }
-
-            function writeToScreen(message) {
-                var pre = document.createElement("p");
-                pre.style.wordWrap = "break-word";
-                pre.innerHTML = message;
-                output.appendChild(pre);
-            }
-
-            window.addEventListener("load", init, false);
-        </script>
-    </head>
-    <body>
-        <h1>WebSocket Subprotocols</h1>
-
-        <div style="text-align: center;">
-            <form action=""> 
-                <input onclick="say_hello()" value="Say Hello" type="button"> 
-                <input id="nameField" name="name" value="WebSocket" type="text"><br>
-            </form>
-        </div>
-        <div id="output"></div>
-    </body>
-</html>
+function writeToScreen(message) {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = message;
+    output.appendChild(pre);
+}
