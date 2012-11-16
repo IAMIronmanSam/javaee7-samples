@@ -55,7 +55,7 @@ import javax.servlet.annotation.WebListener;
 /**
  * @author Arun Gupta
  */
-@WebListener("/")
+//@WebListener("/")
 public class EchoBean2Bootstrap implements ServletContextListener {
 
     @Override
