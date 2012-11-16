@@ -51,50 +51,62 @@
     </head>
     <body>
         <h1>White Board</h1>
-    <canvas id="myCanvas" width="300" height="300" style="border:1px solid #000000;"></canvas>
-    <form name="inputForm">
         <table>
-
             <tr>
-                <th>Color</th>
                 <td>
-                    <input type="radio" name="color" value="#FF0000" checked="true">Red
-                </td>
-                <td>
-                    <input type="radio" name="color" value="#0000FF">Blue
-                </td>
-                <td>
-                    <input type="radio" name="color" value="#FFFF00">Yellow
-                </td>
-                <td>
-                    <input type="radio" name="color" value="#00FF00">Green
-                </td>
-            </tr>
+            <canvas id="myCanvas" width="150" height="150" style="border:1px solid #000000;"></canvas>
+            <canvas id="myCanvas2" width="150" height="150" style="border:1px solid #000000;"></canvas>
+        </td>
+        <td>
+            <form name="inputForm">
+                <table>
 
-            <tr>
-                <th>Shape</th>
-                <td>
-                    <input type="radio" name="shape" value="rectangle" checked="true">Rectangle
-                </td>
-                <td>
-                    <input type="radio" name="shape" value="circle">Circle
-                </td>
-            </tr>
+                    <tr>
+                        <th>Color</th>
+                        <td>
+                            <input type="radio" name="color" value="#FF0000" checked="true">Red
+                        </td>
+                        <td>
+                            <input type="radio" name="color" value="#0000FF">Blue
+                        </td>
+                        <td>
+                            <input type="radio" name="color" value="#FFFF00">Yellow
+                        </td>
+                        <td>
+                            <input type="radio" name="color" value="#00FF00">Green
+                        </td>
+                    </tr>
 
-            <tr>
-                <th>Format</th>
-                <td>
-                    <input type="radio" name="format" value="text" checked="true">Text
-                </td>
-                <td>
-                    <input type="radio" name="format" value="binary">Binary
-                </td>
-            </tr>
-        </table>
-    </form>
-    <div id="output"></div>
-    <script type="text/javascript" src="websocket.js"></script>
-    <script type="text/javascript" src="whiteboard.js"></script>
+                    <tr>
+                        <th>Shape</th>
+                        <td>
+                            <input type="radio" name="shape" value="rectangle" checked="true">Rectangle
+                        </td>
+                        <td>
+                            <input type="radio" name="shape" value="circle">Circle
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Format</th>
+                        <td>
+                            <input type="checkbox" id="format" value="text" checked="true">Text
+                        </td>
+                        <td>
+                            <input type="submit" value="Binary" onclick="defineImageBinary(); return false;"></input>
+                        </td>
+                    </tr>
+                </table>
+
+            </form>
+        </td>
+    </tr>
+</table>
+
+
+<div id="output"></div>
+<script type="text/javascript" src="websocket.js"></script>
+<script type="text/javascript" src="whiteboard.js"></script>
 
 </body>
 </html>

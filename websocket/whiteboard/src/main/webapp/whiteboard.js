@@ -38,8 +38,6 @@
  * holder.
  */
 
-    
-//alert('script.js');
 var canvas = document.getElementById("myCanvas");
 var context = canvas.getContext("2d");
 canvas.addEventListener("click", defineImage, false);
@@ -69,60 +67,124 @@ function defineImage(evt) {
         }
     }
     
-//    alert(document.inputForm.format.length);
-    for (i = 0; i< document.inputForm.format.length; i++) {
-        
-        if (document.inputForm.format[i].checked) {
-//            alert(document.inputForm.format[i].value);
-            switch (document.inputForm.format[i].value) {
-                case "binary":
-                    var image = context.getImageData(0, 0, canvas.width, canvas.height);
-//                    pixels = image.data;
-                    var buffer = new ArrayBuffer(image.data.length);
-                    var bytes = new Uint8Array(buffer);
-                    for (var i=0; i<bytes.length; i++) {
-                        bytes[i] = image.data[i];
-                    }
-                    sendBinary(buffer);
-//                    drawImageBinary(buffer);
-                    break;
-                case "text":
-                default:
-                    var json = JSON.stringify({
-                        "shape": shape.value,
-                        "color": color.value,
-                        "coords": {
-                            "x": currentPos.x,
-                            "y": currentPos.y
-                        }
-                    });
-                    sendText(json);
-                    drawImageText(json);
-                    break;
-            }
+    var json = JSON.stringify({
+        "shape": shape.value,
+        "color": color.value,
+        "coords": {
+            "x": currentPos.x,
+            "y": currentPos.y
         }
+    });
+    drawImageText(json);
+    if (document.getElementById("format").checked) {
+        sendText(json);
     }
+}
+
+function defineImageBinary() {
+//    console.log('defineImageBinary');
+    var image = context.getImageData(0, 0, canvas.width, canvas.height);
+//    pixels = image.data;
+    var buffer = new ArrayBuffer(image.data.length);
+    var bytes = new Uint8Array(buffer);
+    for (var i=0; i<bytes.length; i++) {
+        bytes[i] = image.data[i];
+    }
+//    console.log("sendImageBinary: " + bytes.length);
+    sendBinary(buffer);
 }
 
 function drawImageText(image) {
     var json = JSON.parse(image);
-//    alert("shape: " + json2.shape);
+//    console.log("shape: " + json.shape);
     context.fillStyle = json.color;
     switch (json.shape) {
     case "circle":
         context.beginPath();
-        context.arc(json.coords.x, json.coords.y, 25, 0, 2 * Math.PI, false);
+        context.arc(json.coords.x, json.coords.y, 5, 0, 2 * Math.PI, false);
         context.fill();
         break;
     case "rectangle":
     default:
-        context.fillRect(json.coords.x, json.coords.y, 50, 50);
+        context.fillRect(json.coords.x, json.coords.y, 10, 10);
         break;
     }
 }
 
-function drawImageBinary(image) {
+function drawImageBinary(blob) {
+    console.log("drawImageBinary (blob.size): " + blob.size);
+//    console.log("drawImageBinary: " + blob);
 //    alert(typeof image == "object");
-    alert('drawImageBinary: ' + image);
+//    alert('drawImageBinary: ' + blob.size);
+//    console.log(typeof blob);
+    console.log("instanceof ArrayBuffer: " + (blob instanceof ArrayBuffer));
+    console.log("blob type: " + Object.prototype.toString.call(blob));
+    var bytes = new Uint8Array(blob.size);
+    console.log('drawImageBinary (bytes.length): ' + bytes.length);
+//    var myCanvas = document.getElementById("myCanvas");
+//    var myContext = myCanvas.getContext("2d");
+//    var imageData = myContext.getImageData(0, 0, myCanvas.width, myCanvas.height);
+    
+//    var myCanvas = document.getElementById("myCanvas2");
+//    var myContext = myCanvas.getContext("2d");
+    
+    var imageData = context.createImageData(canvas.width, canvas.height);
+    
+    console.log("imageData: " + imageData.data.length);
+    for (var i=8; i<imageData.data.length; i++) {
+//        console.log(i);
+        imageData.data[i] = bytes[i];
+    }
+    console.log('drawImageBinary (imageData.length): ' + imageData.data.length);
+    context.putImageData(imageData, 0, 0);
+//    myContext.drawImage(imageData, 0, 0);
+    
+    var img = document.createElement('img');
+    img.height = canvas.height;
+    img.width = canvas.width;
+    img.src = canvas.toDataURL();
+//    context.drawImage(image, 0, 0);
+    
+//    var img = document.createElement('img');
+//    img.height = canvas.height;
+//    img.width = canvas.width;
+//    img.src = canvas.toDataURL();
+//    
+//    output.appendChild(img);
+//    output.innerHTML = canvas.innerHTML + "<br />";
+        
+//    context.drawImage(image, 0, 0);
+}
+
+function drawImageBinary3(blob) {
+    var myCanvas = document.getElementById("myCanvas");
+    var myContext = myCanvas.getContext("2d");
+    var imageData = myContext.getImageData(0, 0, myCanvas.width, myCanvas.height);
+    
+    var myCanvas2 = document.getElementById("myCanvas2");
+    var myContext2 = myCanvas2.getContext("2d");
+    
+    var imageData2 = myContext2.createImageData(canvas.width, canvas.height);
+    
+    console.log("imageData2: " + imageData2.data.length);
+    for (var i=0; i<imageData.data.length; i++) {
+        imageData2.data[i] = imageData.data[i];
+    }
+    console.log('drawImageBinary (imageData.length): ' + imageData.data.length);
+    myContext2.putImageData(imageData2, 0, 0);
+}
+
+function drawImageBinary2(blob) {
+    console.log('drawImageBinary: ' + blob.size);
+    
+    var DOMURL = self.URL || self.webkitURL || self;
+    var image = new Image();
+    var svg = new Blob([data], {type: "image/svg+xml;charset=utf-8"});
+    var url = DOMURL.createObjectURL(svg);
+    image.onload = function() {
+        context.drawImage(image, 0, 0);
+        DOMURL.revokeObjectURL(url);
+    };
+    image.src = url;
 }
 

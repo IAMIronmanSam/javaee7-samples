@@ -45,9 +45,14 @@ websocket.onopen = function(evt) { onOpen(evt) };
 websocket.onmessage = function(evt) { onMessage(evt) };
 websocket.onerror = function(evt) { onError(evt) };
 
+//var canvas = document.getElementById("myCanvas");
+//var context = canvas.getContext("2d");
+//canvas.addEventListener("click", defineImage, false);
+
+
 
 function sendText(json) {
-//    alert("sendText: " + json);
+    console.log("sendText: " + json);
     websocket.send(json);
 }
 
@@ -77,7 +82,8 @@ function onOpen() {
 }
 
 function onMessage(evt) {
-//    alert("received: " + evt.data);
+    console.log("received: " + evt.data);
+//    console.log("received: ");
     if (typeof evt.data == "string") {
         drawImageText(evt.data);
     } else {

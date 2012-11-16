@@ -95,9 +95,9 @@ public class Whiteboard {
     public void broadcastBinary(ByteBuffer data, Session session) throws IOException {
         System.out.println("broadcastBinary: " + data);
         for (Session peer : peers) {
-            if (!peer.equals(session)) {
+//            if (!peer.equals(session)) {
                 peer.getRemote().sendBytes(data);
-            }
+//            }
         }
     }
 }
