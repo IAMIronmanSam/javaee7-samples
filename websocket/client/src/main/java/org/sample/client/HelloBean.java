@@ -1,4 +1,3 @@
-<%-- 
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -38,16 +37,20 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
---%>
+package org.sample.client;
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+import javax.net.websocket.annotations.WebSocketEndpoint;
+import javax.net.websocket.annotations.WebSocketMessage;
+
+/**
+ * @author Arun Gupta
+ */
+@WebSocketEndpoint("/client")
+public class HelloBean {
+    
+    @WebSocketMessage
+    public String sayHello(String name) {
+        return "Hello " + name;
+    }
+    
+}
