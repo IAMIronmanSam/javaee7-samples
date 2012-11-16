@@ -37,40 +37,46 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package org.example;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import javax.net.websocket.EncodeException;
-import javax.net.websocket.Session;
-import javax.net.websocket.annotations.WebSocketClose;
-import javax.net.websocket.annotations.WebSocketEndpoint;
-import javax.net.websocket.annotations.WebSocketMessage;
-import javax.net.websocket.annotations.WebSocketOpen;
+var wsUri = "ws://localhost:8080/chat/chat";
+var websocket = new WebSocket(wsUri);
 
-/**
- * @author Arun Gupta
- */
-@WebSocketEndpoint("/chat")
-public class ChatBean {
-    Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
-    
-    @WebSocketOpen
-    public void onOpen(Session peer) {
-        peers.add(peer);
-    }
-    
-    @WebSocketClose
-    public void onClose(Session peer) {
-        peers.remove(peer);
-    }
-    
-    @WebSocketMessage
-    public void message(String message, Session client) throws IOException, EncodeException {
-        for (Session peer : peers) {
-            peer.getRemote().sendObject(message);
-        }
+var username;
+websocket.onopen = function(evt) { onOpen(evt) };
+websocket.onmessage = function(evt) { onMessage(evt) };
+websocket.onerror = function(evt) { onError(evt) };
+var output = document.getElementById("output");
+
+function join() {
+    username = textField.value;
+    websocket.send(username + " joined");
+}
+
+function send_message() {
+    websocket.send(username + ": " + textField.value);
+}
+
+function onOpen(evt) {
+    writeToScreen("CONNECTED");
+}
+
+function onMessage(evt) {
+    writeToScreen("RECEIVED: " + evt.data);
+    if (evt.data.indexOf("joined") != -1) {
+        userField.innerHTML += evt.data.substring(0, evt.data.indexOf(" joined")) + "\n";
+    } else {
+        chatlogField.innerHTML += evt.data + "\n";
     }
 }
+
+function onError(evt) {
+    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
+
+function writeToScreen(message) {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = message;
+    output.appendChild(pre);
+}
+
