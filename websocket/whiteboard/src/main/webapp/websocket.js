@@ -46,12 +46,6 @@ websocket.onopen = function(evt) { onOpen(evt) };
 websocket.onmessage = function(evt) { onMessage(evt) };
 websocket.onerror = function(evt) { onError(evt) };
 
-//var canvas = document.getElementById("myCanvas");
-//var context = canvas.getContext("2d");
-//canvas.addEventListener("click", defineImage, false);
-
-
-
 function sendText(json) {
     console.log("sendText: " + json);
     websocket.send(json);
@@ -67,32 +61,19 @@ function sendBinary(bytes) {
     } else {
         buffer = bytes;
     }
-//    console.log("setting the binary type");
-//    websocket.binaryType="arraybuffer";
     websocket.send(buffer);
-//    writeToScreen("SENT (binary): " + buffer.byteLength + " bytes");
-}
-
-function sendBinary2() {
-//                blob = new Blob([myField2.value], {type: "application/octet-stream"});
-    var blob = new Blob([myField2.value]);
-    websocket.send(blob);
-//    writeToScreen("SENT (binary): " + myField2.value);
 }
 
 function onOpen() {
-//    writeToScreen("CONNECTED");
 }
 
 function onMessage(evt) {
     console.log("received: " + evt.data);
-//    console.log("received: ");
     if (typeof evt.data == "string") {
         drawImageText(evt.data);
     } else {
         drawImageBinary(evt.data);
     }
-//    writeToScreen("RECEIVED: " + evt.data);
 }
 
 function onError(evt) {

@@ -82,9 +82,7 @@ function defineImage(evt) {
 }
 
 function defineImageBinary() {
-//    console.log('defineImageBinary');
     var image = context.getImageData(0, 0, canvas.width, canvas.height);
-//    pixels = image.data;
     var buffer = new ArrayBuffer(image.data.length);
     var bytes = new Uint8Array(buffer);
     for (var i=0; i<bytes.length; i++) {
@@ -96,7 +94,6 @@ function defineImageBinary() {
 
 function drawImageText(image) {
     var json = JSON.parse(image);
-//    console.log("shape: " + json.shape);
     context.fillStyle = json.color;
     switch (json.shape) {
     case "circle":
@@ -112,82 +109,23 @@ function drawImageText(image) {
 }
 
 function drawImageBinary(blob) {
-//    console.log("drawImageBinary (blob.size): " + blob.byteLength);
-//    console.log("drawImageBinary: " + blob);
-//    alert(typeof image == "object");
-//    alert('drawImageBinary: ' + blob.size);
-//    console.log(typeof blob);
-//    var reader = new FileReader();
-//    var buffer = reader.readAsArrayBuffer(blob);
-    console.log("instanceof ArrayBuffer: " + (blob instanceof ArrayBuffer));
-    console.log("blob type: " + Object.prototype.toString.call(blob));
-//    var bytes = new Uint8Array(blob.size);
+//    console.log("instanceof ArrayBuffer: " + (blob instanceof ArrayBuffer));
+//    console.log("blob type: " + Object.prototype.toString.call(blob));
     var bytes = new Uint8Array(blob);
-    console.log('drawImageBinary (bytes.length): ' + bytes.length);
-//    var myCanvas = document.getElementById("myCanvas");
-//    var myContext = myCanvas.getContext("2d");
-//    var imageData = myContext.getImageData(0, 0, myCanvas.width, myCanvas.height);
-    
-//    var myCanvas = document.getElementById("myCanvas2");
-//    var myContext = myCanvas.getContext("2d");
+//    console.log('drawImageBinary (bytes.length): ' + bytes.length);
     
     var imageData = context.createImageData(canvas.width, canvas.height);
     
-    console.log("imageData: " + imageData.data.length);
+//    console.log("imageData: " + imageData.data.length);
     for (var i=8; i<imageData.data.length; i++) {
-//        console.log(i);
         imageData.data[i] = bytes[i];
     }
-    console.log('drawImageBinary (imageData.length): ' + imageData.data.length);
+//    console.log('drawImageBinary (imageData.length): ' + imageData.data.length);
     context.putImageData(imageData, 0, 0);
-//    myContext.drawImage(imageData, 0, 0);
     
     var img = document.createElement('img');
     img.height = canvas.height;
     img.width = canvas.width;
     img.src = canvas.toDataURL();
-//    context.drawImage(image, 0, 0);
-    
-//    var img = document.createElement('img');
-//    img.height = canvas.height;
-//    img.width = canvas.width;
-//    img.src = canvas.toDataURL();
-//    
-//    output.appendChild(img);
-//    output.innerHTML = canvas.innerHTML + "<br />";
-        
-//    context.drawImage(image, 0, 0);
-}
-
-function drawImageBinary3(blob) {
-    var myCanvas = document.getElementById("myCanvas");
-    var myContext = myCanvas.getContext("2d");
-    var imageData = myContext.getImageData(0, 0, myCanvas.width, myCanvas.height);
-    
-    var myCanvas2 = document.getElementById("myCanvas2");
-    var myContext2 = myCanvas2.getContext("2d");
-    
-    var imageData2 = myContext2.createImageData(canvas.width, canvas.height);
-    
-    console.log("imageData2: " + imageData2.data.length);
-    for (var i=0; i<imageData.data.length; i++) {
-        imageData2.data[i] = imageData.data[i];
-    }
-    console.log('drawImageBinary (imageData.length): ' + imageData.data.length);
-    myContext2.putImageData(imageData2, 0, 0);
-}
-
-function drawImageBinary2(blob) {
-    console.log('drawImageBinary: ' + blob.size);
-    
-    var DOMURL = self.URL || self.webkitURL || self;
-    var image = new Image();
-    var svg = new Blob([data], {type: "image/svg+xml;charset=utf-8"});
-    var url = DOMURL.createObjectURL(svg);
-    image.onload = function() {
-        context.drawImage(image, 0, 0);
-        DOMURL.revokeObjectURL(url);
-    };
-    image.src = url;
 }
 
