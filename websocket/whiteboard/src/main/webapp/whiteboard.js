@@ -90,7 +90,7 @@ function defineImageBinary() {
     for (var i=0; i<bytes.length; i++) {
         bytes[i] = image.data[i];
     }
-//    console.log("sendImageBinary: " + bytes.length);
+    console.log("sendImageBinary: " + bytes.length);
     sendBinary(buffer);
 }
 
@@ -112,14 +112,17 @@ function drawImageText(image) {
 }
 
 function drawImageBinary(blob) {
-    console.log("drawImageBinary (blob.size): " + blob.size);
+//    console.log("drawImageBinary (blob.size): " + blob.byteLength);
 //    console.log("drawImageBinary: " + blob);
 //    alert(typeof image == "object");
 //    alert('drawImageBinary: ' + blob.size);
 //    console.log(typeof blob);
+//    var reader = new FileReader();
+//    var buffer = reader.readAsArrayBuffer(blob);
     console.log("instanceof ArrayBuffer: " + (blob instanceof ArrayBuffer));
     console.log("blob type: " + Object.prototype.toString.call(blob));
-    var bytes = new Uint8Array(blob.size);
+//    var bytes = new Uint8Array(blob.size);
+    var bytes = new Uint8Array(blob);
     console.log('drawImageBinary (bytes.length): ' + bytes.length);
 //    var myCanvas = document.getElementById("myCanvas");
 //    var myContext = myCanvas.getContext("2d");

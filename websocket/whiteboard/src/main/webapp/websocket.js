@@ -40,6 +40,7 @@
 
 var wsUri = "ws://localhost:8080/whiteboard/websocket";
 var websocket = new WebSocket(wsUri);
+websocket.binaryType = "arraybuffer";
 var output = document.getElementById("output");
 websocket.onopen = function(evt) { onOpen(evt) };
 websocket.onmessage = function(evt) { onMessage(evt) };
@@ -66,6 +67,8 @@ function sendBinary(bytes) {
     } else {
         buffer = bytes;
     }
+//    console.log("setting the binary type");
+//    websocket.binaryType="arraybuffer";
     websocket.send(buffer);
 //    writeToScreen("SENT (binary): " + buffer.byteLength + " bytes");
 }

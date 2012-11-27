@@ -54,8 +54,8 @@
         <table>
             <tr>
                 <td>
-            <canvas id="myCanvas" width="150" height="150" style="border:1px solid #000000;"></canvas>
-            <canvas id="myCanvas2" width="150" height="150" style="border:1px solid #000000;"></canvas>
+            <canvas id="myCanvas" width="30" height="30" style="border:1px solid #000000;"></canvas>
+            <canvas id="myCanvas2" width="30" height="30" style="border:1px solid #000000;"></canvas>
         </td>
         <td>
             <form name="inputForm">
