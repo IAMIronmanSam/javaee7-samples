@@ -39,8 +39,16 @@
  */
 package org.sample.nonblocking;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
@@ -52,7 +60,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author Arun Gupta
  */
-@WebServlet(name = "ReadTestServlet", urlPatterns = {"/ReadTestServlet"})
+@WebServlet(urlPatterns = {"/ReadTestServlet"}, asyncSupported=true)
 public class ReadTestServlet extends HttpServlet {
 
     /**
@@ -68,24 +76,66 @@ public class ReadTestServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ReadTestServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ReadTestServlet at " + request.getContextPath() + "</h1>");
+        try (PrintWriter output = response.getWriter()) {
+            output.println("<html>");
+            output.println("<head>");
+            output.println("<title>Servlet ReadTestServlet</title>");
+            output.println("</head>");
+            output.println("<body>");
+            output.println("<h1>Servlet ReadTestServlet at " + request.getContextPath() + "</h1>");
+
+            AsyncContext context = request.startAsync();
+
             ServletInputStream input = request.getInputStream();
-            ServletOutputStream output = response.getOutputStream();
-            
-            input.setReadListener(null);
-            
-            out.println("</body>");
-            out.println("</html>");
-        } finally {            
-            out.close();
+//            ServletOutputStream output = response.getOutputStream();
+
+            input.setReadListener(new MyReadListener(input, context));
+
+//            sendChunkedData(request);
+
+            // TODO: This is redundant code and should only be 
+            // specified once in MyReadListener. EG has already agreed 
+            // on it and the API will be updated to reflect that. This sample
+            // will need to be updated after that.
+            int b = -1;
+            while (input.isReady() && ((b = input.read()) != -1)) {
+                System.out.print("-->" + (char) b);
+                output.write(b);
+            }
+
+//            if (input.isFinished()) {
+//                context.complete();
+//            }
+
+            output.println("</body>");
+            output.println("</html>");
+        }
+    }
+
+    private void sendChunkedData(HttpServletRequest request) {
+        try {
+            String path = "http://"
+                    + request.getServerName()
+                    + ":"
+                    + request.getServerPort()
+                    + request.getContextPath()
+                    + request.getServletPath();
+            System.out.println("Invoking the endpoint: " + path);
+            URL url = new URL(path);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setChunkedStreamingMode(2);
+            conn.setDoOutput(true);
+            conn.connect();
+            try (BufferedWriter output = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()))) {
+                output.write("Hello");
+                output.flush();
+                Thread.sleep(5000);
+                output.write("World");
+                output.flush();
+                output.close();
+            }
+        } catch (InterruptedException | IOException ex) {
+            Logger.getLogger(ReadTestServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
