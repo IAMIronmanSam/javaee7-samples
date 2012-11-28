@@ -44,14 +44,12 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -87,57 +85,26 @@ public class ReadTestServlet extends HttpServlet {
             AsyncContext context = request.startAsync();
 
             ServletInputStream input = request.getInputStream();
-//            ServletOutputStream output = response.getOutputStream();
 
             input.setReadListener(new MyReadListener(input, context));
 
-//            sendChunkedData(request);
-
             // TODO: This is redundant code and should only be 
-            // specified once in MyReadListener. EG has already agreed 
-            // on it and the API will be updated to reflect that. This sample
-            // will need to be updated after that.
+            // specified once in MyReadListener. For now, all the data from
+            // InputStream need to be read before ReadListener is engaged.
+            // EG has already agreed on simplification and the implementation
+            // will be updated to reflect that. This sample will be updated 
+            // after that.
             int b = -1;
             while (input.isReady() && ((b = input.read()) != -1)) {
-                System.out.print("-->" + (char) b);
+                System.out.println("-->" + (char) b);
                 output.write(b);
             }
-
-//            if (input.isFinished()) {
-//                context.complete();
-//            }
 
             output.println("</body>");
             output.println("</html>");
         }
     }
 
-    private void sendChunkedData(HttpServletRequest request) {
-        try {
-            String path = "http://"
-                    + request.getServerName()
-                    + ":"
-                    + request.getServerPort()
-                    + request.getContextPath()
-                    + request.getServletPath();
-            System.out.println("Invoking the endpoint: " + path);
-            URL url = new URL(path);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setChunkedStreamingMode(2);
-            conn.setDoOutput(true);
-            conn.connect();
-            try (BufferedWriter output = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()))) {
-                output.write("Hello");
-                output.flush();
-                Thread.sleep(5000);
-                output.write("World");
-                output.flush();
-                output.close();
-            }
-        } catch (InterruptedException | IOException ex) {
-            Logger.getLogger(ReadTestServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
