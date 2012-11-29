@@ -76,7 +76,9 @@ function defineImage(evt) {
         }
     });
     drawImageText(json);
-    if (document.getElementById("format").checked) {
+    console.log(json);
+    console.log(document.getElementById("instant").checked);
+    if (document.getElementById("instant").checked) {
         sendText(json);
     }
 }
@@ -101,7 +103,7 @@ function drawImageText(image) {
         context.arc(json.coords.x, json.coords.y, 5, 0, 2 * Math.PI, false);
         context.fill();
         break;
-    case "rectangle":
+    case "square":
     default:
         context.fillRect(json.coords.x, json.coords.y, 10, 10);
         break;

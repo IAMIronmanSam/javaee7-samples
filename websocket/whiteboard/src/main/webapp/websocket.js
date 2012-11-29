@@ -42,7 +42,6 @@ var wsUri = "ws://localhost:8080/whiteboard/websocket";
 var websocket = new WebSocket(wsUri);
 websocket.binaryType = "arraybuffer";
 var output = document.getElementById("output");
-websocket.onopen = function(evt) { onOpen(evt) };
 websocket.onmessage = function(evt) { onMessage(evt) };
 websocket.onerror = function(evt) { onError(evt) };
 
@@ -52,19 +51,7 @@ function sendText(json) {
 }
 
 function sendBinary(bytes) {
-    if (bytes == null) {
-        var buffer = new ArrayBuffer(myField2.value.length);
-        var bytes = new Uint8Array(buffer);
-        for (var i=0; i<bytes.length; i++) {
-            bytes[i] = i;
-        }
-    } else {
-        buffer = bytes;
-    }
-    websocket.send(buffer);
-}
-
-function onOpen() {
+    websocket.send(bytes);
 }
 
 function onMessage(evt) {

@@ -58,10 +58,10 @@
         </td>
         <td>
             <form name="inputForm">
-                <table>
+                <table cellpadding="2" cellspacing="2">
 
                     <tr>
-                        <th>Color</th>
+                        <th align="left">Color</th>
                         <td>
                             <input type="radio" name="color" value="#FF0000" checked="true">Red
                         </td>
@@ -77,9 +77,9 @@
                     </tr>
 
                     <tr>
-                        <th>Shape</th>
+                        <th align="left">Shape</th>
                         <td>
-                            <input type="radio" name="shape" value="rectangle" checked="true">Rectangle
+                            <input type="radio" name="shape" value="square" checked="true">Square
                         </td>
                         <td>
                             <input type="radio" name="shape" value="circle">Circle
@@ -87,12 +87,12 @@
                     </tr>
 
                     <tr>
-                        <th>Format</th>
+                        <th align="left">Transfer</th>
                         <td>
-                            <input type="checkbox" id="format" value="text" checked="true">Text
+                            <input type="checkbox" id="instant" value="instant" checked="true">Instant
                         </td>
                         <td>
-                            <input type="submit" value="Binary" onclick="defineImageBinary(); return false;"></input>
+                            <input type="submit" value="Snapshot" onclick="defineImageBinary(); return false;"></input>
                         </td>
                     </tr>
                 </table>
