@@ -76,8 +76,6 @@ function defineImage(evt) {
         }
     });
     drawImageText(json);
-    console.log(json);
-    console.log(document.getElementById("instant").checked);
     if (document.getElementById("instant").checked) {
         sendText(json);
     }
@@ -90,7 +88,6 @@ function defineImageBinary() {
     for (var i=0; i<bytes.length; i++) {
         bytes[i] = image.data[i];
     }
-    console.log("sendImageBinary: " + bytes.length);
     sendBinary(buffer);
 }
 

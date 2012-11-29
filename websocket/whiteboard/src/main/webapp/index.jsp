@@ -47,10 +47,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>White Board</title>
+        <title>Collaborative White Board</title>
     </head>
     <body>
-        <h1>White Board</h1>
+        <h1>Collaborative White Board</h1>
+        <h3>Using WebSocket (JSR 356) in GlassFish</h3>
         <table>
             <tr>
                 <td>

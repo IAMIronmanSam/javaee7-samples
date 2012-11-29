@@ -46,11 +46,12 @@ websocket.onmessage = function(evt) { onMessage(evt) };
 websocket.onerror = function(evt) { onError(evt) };
 
 function sendText(json) {
-    console.log("sendText: " + json);
+    console.log("sending text: " + json);
     websocket.send(json);
 }
 
 function sendBinary(bytes) {
+    console.log("sending binary: " + Object.prototype.toString.call(bytes));
     websocket.send(bytes);
 }
 
