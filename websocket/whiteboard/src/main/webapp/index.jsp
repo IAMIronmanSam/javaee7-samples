@@ -69,10 +69,10 @@
                             <input type="radio" name="color" value="#0000FF">Blue
                         </td>
                         <td>
-                            <input type="radio" name="color" value="#FFFF00">Yellow
+                            <input type="radio" name="color" value="#FF9900">Orange
                         </td>
                         <td>
-                            <input type="radio" name="color" value="#00FF00">Green
+                            <input type="radio" name="color" value="#33CC33">Green
                         </td>
                     </tr>
 
