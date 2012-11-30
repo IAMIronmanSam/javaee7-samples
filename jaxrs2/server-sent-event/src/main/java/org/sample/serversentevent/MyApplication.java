@@ -40,12 +40,17 @@
 package org.sample.serversentevent;
 
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import org.glassfish.jersey.media.sse.OutboundEventWriter;
+import org.glassfish.jersey.server.ResourceConfig;
 
 /**
  * @author Arun Gupta
  */
 @ApplicationPath("webresources")
-public class MyApplication extends Application {
+public class MyApplication extends ResourceConfig {
+    public MyApplication() {
+        super(MyResource.class, OutboundEventWriter.class);
+    }
     
+            
 }

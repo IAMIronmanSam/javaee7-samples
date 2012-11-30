@@ -37,66 +37,33 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package org.sample.serversentevent;
+var fruits = document.getElementById("fruits");
+var xhr = new XMLHttpRequest();
+var baseUrl = "http://localhost:8080/server-sent-event/webresources/fruits/";
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import org.glassfish.jersey.media.sse.EventChannel;
-import org.glassfish.jersey.media.sse.OutboundEvent;
-import org.glassfish.jersey.media.sse.SseBroadcaster;
-
-/**
- * @author Arun Gupta
- */
-@Path("fruits")
-public class MyResource {
-
-    private static final SseBroadcaster ssebc = new SseBroadcaster();
-    
-    @GET
-    @Path("list")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String fruits() {
-        return FruitDatabase.list();
-    }
-    
-    @GET
-    @Path("sse")
-    @Produces(EventChannel.SERVER_SENT_EVENTS)
-    public EventChannel sse() {
-        System.out.println("Registered");
-        EventChannel channel = new EventChannel();
-        ssebc.add(channel);
-        return channel;
-    }
-
-    @POST
-    @Path("{name}")
-    public void add(@PathParam("name")String name) {
-        System.out.println("Adding " + name);
-        FruitDatabase.add(name);
-        ssebc.broadcast(new OutboundEvent.Builder()
-                .name("add")
-                .data(String.class, name)
-                .build());
-    }
-
-    @DELETE
-    @Path("{name}")
-    public void delete(@PathParam("name")String name) {
-        System.out.println("Removing " + name);
-        String op = FruitDatabase.remove(name) ? "delete": "noop";
-        ssebc.broadcast(new OutboundEvent.Builder()
-                .name(op)
-                .data(String.class, name)
-                .build());
-    }
+function listFruits() {
+    xhr.open("GET", baseUrl + "list", false);
+    xhr.send();
+//    console.log("Got: " + xhr.responseText);
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = xhr.responseText;
+    fruits.appendChild(pre);
 }
+
+function addFruit() {
+    crudFruit("POST", document.getElementById("fruit").value);
+}
+
+function removeFruit() {
+    crudFruit("DELETE", document.getElementById("fruit").value);
+}
+
+function crudFruit(httpMethod, name) {
+    xhr.open(httpMethod, baseUrl + name, false);
+    xhr.send();
+//    console.log("Invoked " + baseUrl + name + " with status " + xhr.status);
+    listFruits();
+}
+
+window.onload = listFruits();

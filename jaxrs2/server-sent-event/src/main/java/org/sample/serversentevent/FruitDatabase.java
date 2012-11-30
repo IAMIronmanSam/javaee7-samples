@@ -40,63 +40,33 @@
 package org.sample.serversentevent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import org.glassfish.jersey.media.sse.EventChannel;
-import org.glassfish.jersey.media.sse.OutboundEvent;
-import org.glassfish.jersey.media.sse.SseBroadcaster;
 
 /**
  * @author Arun Gupta
  */
-@Path("fruits")
-public class MyResource {
-
-    private static final SseBroadcaster ssebc = new SseBroadcaster();
+public class FruitDatabase {
+    static final List<String> fruits = new ArrayList<>();
     
-    @GET
-    @Path("list")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String fruits() {
-        return FruitDatabase.list();
+    static {
+        String[] arr = {"apple", "mango", "strawberry" };
+        fruits.addAll(Arrays.asList(arr));
+    }
+
+    static String list() {
+        return fruits.toString();
     }
     
-    @GET
-    @Path("sse")
-    @Produces(EventChannel.SERVER_SENT_EVENTS)
-    public EventChannel sse() {
-        System.out.println("Registered");
-        EventChannel channel = new EventChannel();
-        ssebc.add(channel);
-        return channel;
+    static void add(String fruit) {
+        fruits.add(fruit);
     }
-
-    @POST
-    @Path("{name}")
-    public void add(@PathParam("name")String name) {
-        System.out.println("Adding " + name);
-        FruitDatabase.add(name);
-        ssebc.broadcast(new OutboundEvent.Builder()
-                .name("add")
-                .data(String.class, name)
-                .build());
-    }
-
-    @DELETE
-    @Path("{name}")
-    public void delete(@PathParam("name")String name) {
-        System.out.println("Removing " + name);
-        String op = FruitDatabase.remove(name) ? "delete": "noop";
-        ssebc.broadcast(new OutboundEvent.Builder()
-                .name(op)
-                .data(String.class, name)
-                .build());
+    
+    static boolean remove(String fruit) {
+        if (fruits.contains(fruit)) {
+            fruits.remove(fruit);
+            return true;
+        }
+        return false;
     }
 }
