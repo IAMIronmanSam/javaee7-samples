@@ -38,7 +38,7 @@
  * holder.
  */
 
-var wsUri = "ws://localhost:8080/whiteboard/websocket";
+var wsUri = "ws://" + document.location.host + document.location.pathname + "websocket";
 var websocket = new WebSocket(wsUri);
 websocket.binaryType = "arraybuffer";
 var output = document.getElementById("output");
