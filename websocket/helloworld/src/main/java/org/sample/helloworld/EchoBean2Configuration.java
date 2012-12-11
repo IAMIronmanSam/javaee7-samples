@@ -39,36 +39,10 @@
  */
 package org.sample.helloworld;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.websocket.ContainerProvider;
-import javax.websocket.DefaultServerConfiguration;
-import javax.websocket.ServerContainer;
-import javax.websocket.ServerEndpointConfiguration;
-
 /**
+ *
  * @author Arun Gupta
  */
-//@WebListener("/")
-public class EchoBean2Bootstrap implements ServletContextListener {
-
-    @Override
-    public void contextInitialized(ServletContextEvent sce) {
-//        try {
-            EchoBean2 echoBean2 = new EchoBean2();
-            ServerEndpointConfiguration serverConfig = new DefaultServerConfiguration("/echo2");
-//            assert serverConfig == null;
-            ServerContainer serverContainer = ContainerProvider.getServerContainer();
-            assert serverContainer == null;
-//            serverContainer.publishServer(serverConfig);
-//        } catch (ConnectException ex) {
-//            Logger.getLogger(EchoBean2Bootstrap.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+public class EchoBean2Configuration {
     
 }

@@ -59,7 +59,7 @@
             </form>
             <form action=""> 
                 <h2>Binary Data</h2>
-                <input onclick="echoBinary2()" value="Echo" type="button"> 
+                <input onclick="echoBinary()" value="Echo" type="button"> 
                 <input id="myField2" value="12345678" type="text"><br>
             </form>
         </div>

@@ -41,14 +41,15 @@ package org.sample.helloworld;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import javax.net.websocket.Session;
-import javax.net.websocket.annotations.WebSocketEndpoint;
-import javax.net.websocket.annotations.WebSocketMessage;
+import javax.websocket.EndpointFactory;
+import javax.websocket.Session;
+import javax.websocket.WebSocketEndpoint;
+import javax.websocket.WebSocketMessage;
 
 /**
  * @author Arun Gupta
  */
-@WebSocketEndpoint("/echo")
+@WebSocketEndpoint(value="/echo", factory=EchoBean.DummyEndpointFactory.class)
 public class EchoBean {
     
     @WebSocketMessage
@@ -93,5 +94,17 @@ public class EchoBean {
 //        System.out.println("sayHello3");
 //        return data;
 //    }
+    
+    /**
+     * Only a workaround until the API is updated.
+     * This class is not used in the RI anyway.
+     */
+    class DummyEndpointFactory implements EndpointFactory {
+
+        @Override
+        public Object createEndpoint() {
+            return null;
+        }
+    }
     
 }

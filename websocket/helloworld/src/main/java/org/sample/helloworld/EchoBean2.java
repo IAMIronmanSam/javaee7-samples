@@ -40,9 +40,9 @@
 package org.sample.helloworld;
 
 import java.io.IOException;
-import javax.net.websocket.Endpoint;
-import javax.net.websocket.MessageHandler;
-import javax.net.websocket.Session;
+import javax.websocket.Endpoint;
+import javax.websocket.MessageHandler;
+import javax.websocket.Session;
 
 /**
  * @author Arun Gupta
@@ -51,7 +51,7 @@ public class EchoBean2 extends Endpoint {
 
     @Override
     public void onOpen(final Session session) {
-        session.addMessageHandler(new MessageHandler.Text() {
+        session.addMessageHandler(new MessageHandler.Basic<String>() {
 
             @Override
             public void onMessage(String name) {

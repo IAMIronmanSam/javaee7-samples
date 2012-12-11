@@ -38,7 +38,7 @@
  * holder.
  */
 
-var wsUri = "ws://localhost:8080/helloworld/echo";
+var wsUri = "ws://" + document.location.host + document.location.pathname + "echo";
 var websocket = new WebSocket(wsUri);
 websocket.onopen = function(evt) { onOpen(evt) };
 websocket.onmessage = function(evt) { onMessage(evt) };
