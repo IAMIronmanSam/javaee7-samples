@@ -39,40 +39,13 @@
  */
 package org.sample.whiteboard;
 
-import javax.net.websocket.DecodeException;
-import javax.net.websocket.Decoder;
-import javax.net.websocket.EncodeException;
-import javax.net.websocket.Encoder;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+import javax.websocket.EncodeException;
+import javax.websocket.Encoder;
 
 /**
  * @author Arun Gupta
  */
-public class FigureDecoderEncoder implements Decoder.Text<Figure>, Encoder.Text<Figure> {
-    
-    @Override
-    public Figure decode(String string) throws DecodeException {
-        try {
-            System.out.println("decoding: " + string);
-            JSONObject jsonObject = new JSONObject(string);
-            return new Figure(jsonObject);
-        } catch (JSONException ex) {
-            throw new DecodeException("Error parsing JSON", ex.getMessage(), ex.fillInStackTrace());
-        }
-    }
-
-    @Override
-    public boolean willDecode(String string) {
-        try {
-            new JSONObject(string);
-            return true;
-        } catch (JSONException ex) {
-            ex.printStackTrace();
-            return false;
-        }
-    }
-
+public class FigureEncoder implements Encoder.Text<Figure> {
     @Override
     public String encode(Figure figure) throws EncodeException {
         return figure.getJson().toString();

@@ -44,19 +44,21 @@ import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import javax.net.websocket.EncodeException;
-import javax.net.websocket.Session;
-import javax.net.websocket.annotations.WebSocketClose;
-import javax.net.websocket.annotations.WebSocketEndpoint;
-import javax.net.websocket.annotations.WebSocketMessage;
-import javax.net.websocket.annotations.WebSocketOpen;
+import javax.websocket.EncodeException;
+import javax.websocket.EndpointFactory;
+import javax.websocket.Session;
+import javax.websocket.WebSocketClose;
+import javax.websocket.WebSocketEndpoint;
+import javax.websocket.WebSocketMessage;
+import javax.websocket.WebSocketOpen;
 
 /**
  * @author Arun Gupta
  */
 @WebSocketEndpoint(value = "websocket",
-encoders = {FigureDecoderEncoder.class},
-decoders = {FigureDecoderEncoder.class})
+encoders = {FigureEncoder.class},
+decoders = {FigureDecoder.class},
+factory = Whiteboard.DummyEndpointFactory.class)
 public class Whiteboard {
 
     Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
@@ -80,7 +82,6 @@ public class Whiteboard {
 ////            }
 //        }
 //    }
-
     @WebSocketMessage
     public void boradcastFigure(Figure figure, Session session) throws IOException, EncodeException {
         System.out.println("boradcastFigure: " + figure);
@@ -92,12 +93,24 @@ public class Whiteboard {
     }
 
     @WebSocketMessage
-    public void broadcastBinary(ByteBuffer data, Session session) throws IOException {
+    public void broadcastSnapshot(ByteBuffer data, Session session) throws IOException {
         System.out.println("broadcastBinary: " + data);
         for (Session peer : peers) {
             if (!peer.equals(session)) {
                 peer.getRemote().sendBytes(data);
             }
+        }
+    }
+
+    /**
+     * Only a workaround until the API is updated.
+     * This class is not used in the RI anyway.
+     */
+    class DummyEndpointFactory implements EndpointFactory {
+
+        @Override
+        public Object createEndpoint() {
+            return null;
         }
     }
 }
