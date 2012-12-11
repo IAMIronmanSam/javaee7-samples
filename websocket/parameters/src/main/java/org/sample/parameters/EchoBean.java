@@ -39,20 +39,41 @@
  */
 package org.sample.parameters;
 
-import javax.net.websocket.annotations.WebSocketEndpoint;
-import javax.net.websocket.annotations.WebSocketMessage;
-import javax.net.websocket.annotations.WebSocketPathParam;
+import javax.websocket.EndpointFactory;
+import javax.websocket.WebSocketEndpoint;
+import javax.websocket.WebSocketMessage;
+import javax.websocket.WebSocketOpen;
+import javax.websocket.WebSocketPathParam;
 
 /**
  * @author Arun Gupta
  */
-@WebSocketEndpoint("/greet")
+@WebSocketEndpoint(value="/greet/{name}", factory=EchoBean.DummyEndpointFactory.class)
 public class EchoBean {
     
+    String name;
+    
+    @WebSocketOpen
+    public void onOpen(@WebSocketPathParam("name")String name) {
+        this.name = name;
+        System.out.println("onOpen: " + name);
+    }
+    
     @WebSocketMessage
-    public String sayHello(String name) {
-//    public String sayHello(@WebSocketPathParam("name")String name) {
-        System.out.println("echoText");
+    public String sayHello(String payload) {
+        System.out.println("sayHello");
         return "Hello " + name + "!";
+    }
+    
+    /**
+     * Only a workaround until the API is updated.
+     * This class is not used in the RI anyway.
+     */
+    class DummyEndpointFactory implements EndpointFactory {
+
+        @Override
+        public Object createEndpoint() {
+            return null;
+        }
     }
 }

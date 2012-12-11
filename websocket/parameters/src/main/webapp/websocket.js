@@ -38,29 +38,27 @@
  * holder.
  */
 
-var wsUri = "ws://" + document.location.host + document.location.pathname + "greet";
-var websocket = new WebSocket(wsUri);
-websocket.onopen = function(evt) { onOpen(evt) };
-websocket.onmessage = function(evt) { onMessage(evt) };
-websocket.onerror = function(evt) { onError(evt) };
-
 var output = document.getElementById("output");
 
-function echoText() {
-    websocket.send(myField.value);
-    writeToScreen("SENT (text): " + myField.value);
-}
-
-function onOpen() {
-    writeToScreen("CONNECTED");
-}
-
-function onMessage(evt) {
-    writeToScreen("RECEIVED: " + evt.data);
-}
-
-function onError(evt) {
-    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+function sayHello() {
+    var wsUri = "ws://" 
+        + document.location.host 
+        + document.location.pathname 
+        + "greet/"
+        + myField.value;
+    console.log(wsUri);
+    var websocket = new WebSocket(wsUri);
+    websocket.onopen = function() {
+        writeToScreen("CONNECTED");
+        websocket.send(myField.value);
+        writeToScreen("SENT (text): " + myField.value);
+    };
+    websocket.onmessage = function(evt) {
+        writeToScreen("RECEIVED: " + evt.data);
+    };
+    websocket.onerror = function(evt) {
+        writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+    };
 }
 
 function writeToScreen(message) {

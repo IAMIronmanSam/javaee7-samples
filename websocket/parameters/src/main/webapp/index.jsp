@@ -45,17 +45,17 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Hello WebSocket</title>
+        <title>WebSocket Path Parameters</title>
 
     </head>
     <body>
-        <h1>Getting Started with WebSocket!!</h1>
+        <h1>WebSocket Path Parameters</h1>
 
         <div style="text-align: center;">
             <form action=""> 
                 <h2>Text Data</h2>
-                <input onclick="echoText()" value="Echo" type="button"> 
-                <input id="myField" value="WebSocket" type="text"><br>
+                <input onclick="sayHello()" value="Say Hello" type="button"> 
+                <input id="myField" value="Duke" type="text"><br>
             </form>
         </div>
         <div id="output"></div>
