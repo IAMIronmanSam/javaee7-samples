@@ -39,10 +39,10 @@
  */
 package org.sample.encoder;
 
-import javax.net.websocket.DecodeException;
-import javax.net.websocket.Decoder;
-import javax.net.websocket.EncodeException;
-import javax.net.websocket.Encoder;
+import javax.websocket.DecodeException;
+import javax.websocket.Decoder;
+import javax.websocket.EncodeException;
+import javax.websocket.Encoder;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 

@@ -39,16 +39,17 @@
  */
 package org.sample.encoder;
 
-import javax.net.websocket.annotations.WebSocketEndpoint;
-import javax.net.websocket.annotations.WebSocketMessage;
+import javax.websocket.EndpointFactory;
+import javax.websocket.WebSocketEndpoint;
+import javax.websocket.WebSocketMessage;
 
 /**
- *
  * @author Arun Gupta
  */
 @WebSocketEndpoint(value = "/encoder", 
         encoders = {MyMessage.class, MyMessage2.class}, 
-        decoders = {MyMessage.class, MyMessage2.class})
+        decoders = {MyMessage.class, MyMessage2.class},
+        factory=MyEndpoint.DummyEndpointFactory.class)
 public class MyEndpoint {
 
     @WebSocketMessage
@@ -56,5 +57,17 @@ public class MyEndpoint {
         System.out.println("messageReceived: " + message);
         
         return message;
+    }
+    
+    /**
+     * Only a workaround until the API is updated.
+     * This class is not used in the RI anyway.
+     */
+    class DummyEndpointFactory implements EndpointFactory {
+
+        @Override
+        public Object createEndpoint() {
+            return null;
+        }
     }
 }
