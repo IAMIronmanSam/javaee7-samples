@@ -99,7 +99,8 @@ public class TestServlet extends HttpServlet {
             out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
             out.println("doGet: starting a new task<br/>");
             executor.submit(new MyTask());
-            out.println("doGet: submitted the task<br/>");
+            out.println("doGet: submitted the task<br/><br/>");
+            out.println("Check server.log for output from the task.");
             out.println("</body>");
             out.println("</html>");
         }
