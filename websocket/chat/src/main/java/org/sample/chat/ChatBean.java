@@ -43,17 +43,18 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import javax.net.websocket.EncodeException;
-import javax.net.websocket.Session;
-import javax.net.websocket.annotations.WebSocketClose;
-import javax.net.websocket.annotations.WebSocketEndpoint;
-import javax.net.websocket.annotations.WebSocketMessage;
-import javax.net.websocket.annotations.WebSocketOpen;
+import javax.websocket.EncodeException;
+import javax.websocket.EndpointFactory;
+import javax.websocket.Session;
+import javax.websocket.WebSocketClose;
+import javax.websocket.WebSocketEndpoint;
+import javax.websocket.WebSocketMessage;
+import javax.websocket.WebSocketOpen;
 
 /**
  * @author Arun Gupta
  */
-@WebSocketEndpoint("/chat")
+@WebSocketEndpoint(value="/chat", factory=ChatBean.DummyEndpointFactory.class)
 public class ChatBean {
     Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
     
@@ -73,4 +74,17 @@ public class ChatBean {
             peer.getRemote().sendObject(message);
         }
     }
+    
+        /**
+     * Only a workaround until the API is updated.
+     * This class is not used in the RI anyway.
+     */
+    class DummyEndpointFactory implements EndpointFactory {
+
+        @Override
+        public Object createEndpoint() {
+            return null;
+        }
+    }
+
 }
