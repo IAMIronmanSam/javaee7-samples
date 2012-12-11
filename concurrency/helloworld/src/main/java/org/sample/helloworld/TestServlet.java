@@ -41,13 +41,17 @@ package org.sample.helloworld;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.annotation.Resource;
-import javax.enterprise.concurrent.ManagedExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.glassfish.concurrent.ri.AbstractManagedExecutorService;
+import org.glassfish.concurrent.ri.ManagedExecutorServiceImpl;
+import org.glassfish.concurrent.ri.ManagedThreadFactoryImpl;
 
 /**
  * @author Arun Gupta
@@ -55,8 +59,23 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = {"/TestServlet"})
 public class TestServlet extends HttpServlet {
 
-    @Resource(name = "concurrent/BatchExecutor")
-    ManagedExecutorService executor;
+//    @Resource(name = "concurrent/BatchExecutor")
+//    ManagedExecutorService executor;
+    ManagedThreadFactoryImpl factory = new ManagedThreadFactoryImpl("factory");
+    
+    ManagedExecutorServiceImpl executor = new ManagedExecutorServiceImpl("concurrent/BatchExecutor",
+            factory, 
+            2000, 
+            true, 
+            5, 
+            10, 
+            1000, 
+            TimeUnit.MILLISECONDS, 
+            4, 
+            null, 
+            AbstractManagedExecutorService.RejectPolicy.ABORT, 
+            AbstractManagedExecutorService.RunLocation.LOCAL, 
+            true);
 
     /**
      * Processes requests for both HTTP
@@ -77,8 +96,10 @@ public class TestServlet extends HttpServlet {
             out.println("<title>Servlet TestServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            executor.submit(new MyTask());
             out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
+            out.println("doGet: starting a new task<br/>");
+            executor.submit(new MyTask());
+            out.println("doGet: submitted the task<br/>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -129,7 +150,16 @@ public class TestServlet extends HttpServlet {
 
         @Override
         public void run() {
-            System.out.println("running");
+            try {
+                System.out.println("task: starting");
+                System.out.println("run: sleeping 2 seconds");
+                Thread.sleep(2000);
+                System.out.println("run: sleeping 2 seconds");
+                Thread.sleep(2000);
+                System.out.println("run: complete");
+            } catch (InterruptedException ex) {
+                Logger.getLogger(TestServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
     }
