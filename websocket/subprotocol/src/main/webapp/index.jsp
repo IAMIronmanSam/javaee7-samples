@@ -45,11 +45,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Hello WebSocket</title>
+        <title>WebSocket Subprotocols</title>
 
     </head>
     <body>
-        <h1>Getting Started with WebSocket!!</h1>
+        <h1>WebSocket Subprotocols</h1>
 
         <div style="text-align: center;">
             <form action=""> 

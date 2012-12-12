@@ -38,7 +38,10 @@
  * holder.
  */
 
-var wsUri = "ws://" + document.location.host + document.location.pathname + "endpoint";
+var wsUri = "ws://" 
+    + document.location.host 
+    + document.location.pathname 
+    + "endpoint";
 var websocket = new WebSocket(wsUri, "myProtocol");
 websocket.onopen = function(evt) { onOpen(evt) };
 websocket.onmessage = function(evt) { onMessage(evt) };

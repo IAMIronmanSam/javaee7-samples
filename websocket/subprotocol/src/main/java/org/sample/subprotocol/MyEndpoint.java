@@ -39,16 +39,32 @@
  */
 package org.sample.subprotocol;
 
-import javax.net.websocket.annotations.WebSocketEndpoint;
-import javax.net.websocket.annotations.WebSocketMessage;
+import javax.websocket.EndpointFactory;
+import javax.websocket.WebSocketEndpoint;
+import javax.websocket.WebSocketMessage;
+
 
 /**
  * @author Arun Gupta
  */
-@WebSocketEndpoint(value="/endpoint", subprotocols="myProtocol")
+@WebSocketEndpoint(value="/endpoint", 
+        subprotocols="myProtocol", 
+        factory=MyEndpoint.DummyEndpointFactory.class)
 public class MyEndpoint {
     @WebSocketMessage
     public String sayHello(String name) {
         return "Hello " + name + "!";
+    }
+    
+    /**
+     * Only a workaround until the API is updated.
+     * This class is not used in the RI anyway.
+     */
+    class DummyEndpointFactory implements EndpointFactory {
+
+        @Override
+        public Object createEndpoint() {
+            return null;
+        }
     }
 }
