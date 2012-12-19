@@ -40,37 +40,24 @@
 package org.sample.hellochunk;
 
 import java.io.Externalizable;
-import javax.batch.annotation.CheckpointInfo;
-import javax.batch.annotation.Close;
-import javax.batch.annotation.ItemReader;
-import javax.batch.annotation.Open;
-import javax.batch.annotation.ReadItem;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * @author Arun Gupta
  */
-@ItemReader
-public class MyItemReader {
-    private static int id;
-    
-    @Open
-    void open(MyCheckpoint checkpoint) {
-        System.out.println(getClass().getName() + ".open");
+public class MyCheckpoint implements Externalizable {
+    int items;
+
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeInt(items);
     }
-    
-    @Close
-    void close() {
-        System.out.println(getClass().getName() + ".close");
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        items = in.readInt();
     }
-    
-    @ReadItem
-    MyBatchRecord read() {
-        return new MyBatchRecord(++id);
-    }
-    
-    @CheckpointInfo
-    MyCheckpoint getCheckPoint() {
-        return null;
-    }
-    
+
 }

@@ -68,7 +68,7 @@ public class MyItemWriter {
     }
     
     @CheckpointInfo
-    Externalizable getCheckPoint() {
+    MyCheckpoint getCheckPoint() {
         return null;
     }
     
