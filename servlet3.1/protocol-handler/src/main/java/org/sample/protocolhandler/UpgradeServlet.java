@@ -79,7 +79,7 @@ public class UpgradeServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_SWITCHING_PROTOCOLS);
                 response.setHeader("Connection", "Upgrade");
                 response.setHeader("Upgrade", "echo");
-                request.upgrade(new MyProtocolHandler(request.getInputStream(), response.getOutputStream()));
+                request.upgrade(MyProtocolHandler.class);
                 System.out.println("Request upgraded to MyProtocolHandler");
             }
             out.println("</body>");
