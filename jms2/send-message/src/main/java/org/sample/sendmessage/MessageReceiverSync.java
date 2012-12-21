@@ -39,33 +39,30 @@
  */
 package org.sample.sendmessage;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.ejb.MessageDriven;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import javax.annotation.Resource;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.jms.JMSConnectionFactory;
+import javax.jms.JMSConsumer;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
 
 /**
  * @author Arun Gupta
  */
-@MessageDriven(mappedName = "java:global/jms/myInboundQueue")
-public class MyMessageBean implements MessageListener {
+@Stateless
+public class MessageReceiverSync {
 
-    @Override
-    public void onMessage(Message message) {
-        
-//        try (JMSContext context = connectionFactory.createContext();) { 
-//            JMSConsumer consumer = context.createConsumer(inboundQueue); 
-//            return consumer.receivePayload(String.class);
-//        }
-        
-        try {
-            TextMessage tm = (TextMessage) message;
-            System.out.println("message received: " + tm.getText());
-        } catch (JMSException ex) {
-            Logger.getLogger(MyMessageBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    @Inject
+//    @JMSConnectionFactory("java:global/jms/myConnectionFactory")
+    private JMSContext context;
+    
+    @Resource(lookup = "java:global/jms/myQueue")
+    Queue myQueue;
+
+    public String receiveMessage() {
+        String message = context.createConsumer(myQueue).receiveBody(String.class, 1000);
+        return "Received " + message;
     }
+
 }

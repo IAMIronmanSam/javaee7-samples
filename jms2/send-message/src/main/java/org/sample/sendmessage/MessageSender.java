@@ -44,33 +44,29 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.jms.DeliveryMode;
 import javax.jms.JMSContext;
-import javax.jms.JMSDestinationDefinition;
 import javax.jms.Queue;
 
 /**
  * @author Arun Gupta
  */
 @Stateless
-@JMSDestinationDefinition(name = "java:global/jms/myInboundQueue",
-        resourceAdapterName = "jmsra",
-        className = "javax.jms.Queue",
-        destinationName="myInboundQueue")
-public class JMSClient {
+public class MessageSender {
 
     @Inject
+//    @JMSConnectionFactory("java:global/jms/myConnectionFactory")
     JMSContext context;
     
-    @Resource(lookup = "java:global/jms/myInboundQueue")
+    @Resource(lookup = "java:global/jms/myQueue")
     Queue queue;
 
     public void sendMessage(String message) {
-        context.createProducer().send(queue, "First: " + message);
-        
-        context.createProducer()
-                .setProperty("foo", "bar")
-                .setTimeToLive(10000)
-                .setDeliveryMode(DeliveryMode.NON_PERSISTENT)
-                .setDisableMessageTimestamp(false)
-                .send(queue, "Second: " + message);
+        context.createProducer().send(queue, message);
+//        
+//        context.createProducer()
+//                .setProperty("foo", "bar")
+//                .setTimeToLive(10000)
+//                .setDeliveryMode(DeliveryMode.NON_PERSISTENT)
+//                .setDisableMessageTimestamp(false)
+//                .send(queue, "Second: " + message);
     }
 }

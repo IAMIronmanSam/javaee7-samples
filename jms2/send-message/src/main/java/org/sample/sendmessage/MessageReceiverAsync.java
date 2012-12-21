@@ -1,4 +1,3 @@
-<%-- 
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -38,18 +37,29 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
---%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+package org.sample.sendmessage;
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>JMS 2 Send Message</h1>
-        <a href="/send-message/TestServlet"/>Send and Receive</a> the message.
-    </body>
-</html>
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.MessageDriven;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
+
+/**
+ * @author Arun Gupta
+ */
+@MessageDriven(mappedName = "java:global/jms/myQueue")
+public class MessageReceiverAsync implements MessageListener {
+
+    @Override
+    public void onMessage(Message message) {
+        try {
+            TextMessage tm = (TextMessage) message;
+            System.out.println("Message received: " + tm.getText());
+        } catch (JMSException ex) {
+            Logger.getLogger(MessageReceiverAsync.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}
