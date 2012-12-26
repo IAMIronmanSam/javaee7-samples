@@ -57,7 +57,7 @@ import javax.servlet.http.HttpServletResponse;
         className = "javax.jms.Queue",
         destinationName="queue1234",
         description="My Queue")
-@WebServlet(name = "TestServlet", urlPatterns = {"/TestServlet"})
+@WebServlet(urlPatterns = {"/TestServlet"})
 public class TestServlet extends HttpServlet {
     
     @EJB MessageSender sender;
@@ -89,7 +89,7 @@ public class TestServlet extends HttpServlet {
             out.format("Message sent: %1$s.<br>", m);
             out.println("Receiving message...<br>");
             String message = receiver.receiveMessage();
-            out.println("Message received: " + message);
+            out.println("Message rx: " + message);
             out.println("</body>");
             out.println("</html>");
         }

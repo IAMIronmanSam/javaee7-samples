@@ -42,7 +42,7 @@ package org.sample.sendmessage;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.jms.DeliveryMode;
+import javax.jms.JMSConnectionFactory;
 import javax.jms.JMSContext;
 import javax.jms.Queue;
 
@@ -53,9 +53,10 @@ import javax.jms.Queue;
 public class MessageSender {
 
     @Inject
+    @JMSConnectionFactory("java:comp/DefaultJMSConnectionFactory")
     JMSContext context;
     
-    @Resource(lookup = "java:global/jms/myQueue")
+    @Resource(mappedName="java:global/jms/myQueue")
     Queue queue;
 
     public void sendMessage(String message) {
