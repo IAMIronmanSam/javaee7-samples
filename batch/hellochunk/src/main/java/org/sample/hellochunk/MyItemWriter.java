@@ -39,10 +39,8 @@
  */
 package org.sample.hellochunk;
 
-import java.io.Externalizable;
 import java.util.List;
 import javax.batch.annotation.CheckpointInfo;
-import javax.batch.annotation.Close;
 import javax.batch.annotation.ItemWriter;
 import javax.batch.annotation.Open;
 import javax.batch.annotation.WriteItems;
@@ -53,23 +51,22 @@ import javax.batch.annotation.WriteItems;
 @ItemWriter
 public class MyItemWriter {
     @Open
-    void open(Externalizable checkpoint) {
-        System.out.println(getClass().getName() + ".open");
+    void open(MyCheckpoint checkpoint) {
+        System.out.println(getClass().getName() + ".open: " + checkpoint.getItemCount());
     }
     
-    @Close
-    void close() {
-        System.out.println(getClass().getName() + ".close");
-    }
-
     @WriteItems
     void write(List<MyBatchRecord> list) {
-        
+        System.out.println("Writing the chunk...");
+        for (MyBatchRecord record : list) {
+            System.out.println(record.getId());
+        }
+        System.out.println("... done.");
     }
     
     @CheckpointInfo
     MyCheckpoint getCheckPoint() {
-        return null;
+        return new MyCheckpoint();
     }
     
 }

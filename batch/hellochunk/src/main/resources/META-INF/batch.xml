@@ -42,9 +42,9 @@
 
 <job id="myJob" xmlns="http://batch.jsr352/jsl">
     <step id="myStep" >
-        <chunk reader="MyItemReader" 
-               writer="MyItemWriter" 
-               processor="MyItemProcessor"
+        <chunk reader="org.sample.hellochunk.MyItemReader" 
+               writer="org.sample.hellochunk.MyItemWriter" 
+               processor="org.sample.hellochunk.MyItemProcessor"
                buffer-size="5"
                checkpoint-policy="item"
                commit-interval="10" />		

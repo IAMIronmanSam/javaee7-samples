@@ -39,9 +39,7 @@
  */
 package org.sample.hellochunk;
 
-import java.io.Externalizable;
 import javax.batch.annotation.CheckpointInfo;
-import javax.batch.annotation.Close;
 import javax.batch.annotation.ItemReader;
 import javax.batch.annotation.Open;
 import javax.batch.annotation.ReadItem;
@@ -55,12 +53,7 @@ public class MyItemReader {
     
     @Open
     void open(MyCheckpoint checkpoint) {
-        System.out.println(getClass().getName() + ".open");
-    }
-    
-    @Close
-    void close() {
-        System.out.println(getClass().getName() + ".close");
+        System.out.println(getClass().getName() + ".open: " + checkpoint.getItemCount());
     }
     
     @ReadItem
@@ -70,7 +63,7 @@ public class MyItemReader {
     
     @CheckpointInfo
     MyCheckpoint getCheckPoint() {
-        return null;
+        return new MyCheckpoint();
     }
     
 }

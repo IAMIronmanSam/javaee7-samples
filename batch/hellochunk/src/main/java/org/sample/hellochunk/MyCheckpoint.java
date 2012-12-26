@@ -48,16 +48,23 @@ import java.io.ObjectOutput;
  * @author Arun Gupta
  */
 public class MyCheckpoint implements Externalizable {
-    int items;
-
+    private int itemCount;
+    
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeInt(items);
+        out.writeInt(itemCount);
     }
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        items = in.readInt();
+        itemCount = in.readInt();
     }
 
+    public int getItemCount() {
+        return itemCount;
+    }
+
+    public void setItemCount(int items) {
+        this.itemCount = items;
+    }
 }
