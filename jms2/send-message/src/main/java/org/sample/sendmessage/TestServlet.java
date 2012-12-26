@@ -42,7 +42,6 @@ package org.sample.sendmessage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
-import javax.jms.JMSConnectionFactoryDefinition;
 import javax.jms.JMSDestinationDefinition;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -56,14 +55,8 @@ import javax.servlet.http.HttpServletResponse;
 @JMSDestinationDefinition(name = "java:global/jms/myQueue",
         resourceAdapterName = "jmsra",
         className = "javax.jms.Queue",
-        destinationName="java:global/jms/myQueue",
+        destinationName="queue1234",
         description="My Queue")
-
-//@JMSConnectionFactoryDefinition(
-//    name="java:global/jms/myConnectionFactory",
-//    className= "javax.jms.ConnectionFactory",
-//    description="My ConnectionFactory"
-//)     
 @WebServlet(name = "TestServlet", urlPatterns = {"/TestServlet"})
 public class TestServlet extends HttpServlet {
     

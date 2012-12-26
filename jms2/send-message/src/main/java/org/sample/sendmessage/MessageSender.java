@@ -53,7 +53,6 @@ import javax.jms.Queue;
 public class MessageSender {
 
     @Inject
-//    @JMSConnectionFactory("java:global/jms/myConnectionFactory")
     JMSContext context;
     
     @Resource(lookup = "java:global/jms/myQueue")
@@ -61,12 +60,5 @@ public class MessageSender {
 
     public void sendMessage(String message) {
         context.createProducer().send(queue, message);
-//        
-//        context.createProducer()
-//                .setProperty("foo", "bar")
-//                .setTimeToLive(10000)
-//                .setDeliveryMode(DeliveryMode.NON_PERSISTENT)
-//                .setDisableMessageTimestamp(false)
-//                .send(queue, "Second: " + message);
     }
 }
