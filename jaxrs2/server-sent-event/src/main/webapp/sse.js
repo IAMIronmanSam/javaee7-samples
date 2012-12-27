@@ -39,7 +39,7 @@
  */
 var fruits = document.getElementById("fruits");
 var xhr = new XMLHttpRequest();
-var baseUrl = "http://localhost:8080/server-sent-event/webresources/fruits/";
+var baseUrl = "http://" + document.location.host + document.location.pathname + "webresources/fruits/";
 
 function listFruits() {
     xhr.open("GET", baseUrl + "list", false);
