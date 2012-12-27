@@ -40,7 +40,6 @@
 package org.sample.filter;
 
 import java.io.IOException;
-import java.util.Map.Entry;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ContainerResponseContext;
@@ -72,5 +71,4 @@ public class ServerLoggingFilter implements ContainerRequestFilter, ContainerRes
         }
         System.out.println("ContainerResponseFilter.filter<end>");
     }
-    
 }
