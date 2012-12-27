@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.sample</groupId>
-    <artifactId>jaxrs2-client</artifactId>
+    <artifactId>client</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>jaxrs2-client</name>
+    <name>client</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -32,7 +32,7 @@
     </dependencies>
 
     <build>
-        <finalName>jaxrs2-client</finalName>
+        <finalName>client</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
