@@ -39,9 +39,9 @@
  */
 package org.sample.serversentevent;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -49,9 +49,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.glassfish.jersey.media.sse.EventChannel;
+import org.glassfish.jersey.media.sse.EventOutput;
 import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.glassfish.jersey.media.sse.SseBroadcaster;
+import org.glassfish.jersey.media.sse.SseFeature;
+import org.glassfish.jersey.server.ChunkedOutput;
 
 /**
  * @author Arun Gupta
@@ -59,7 +61,14 @@ import org.glassfish.jersey.media.sse.SseBroadcaster;
 @Path("fruits")
 public class MyResource {
 
-    private static final SseBroadcaster ssebc = new SseBroadcaster();
+    private final SseBroadcaster broadcaster = new SseBroadcaster() {
+            @Override
+            public void onException(ChunkedOutput<OutboundEvent> outboundEventChunkedOutput, Exception exception) {
+                exception.printStackTrace();
+            }
+        };
+    
+    static EventOutput output = new EventOutput();
     
     @GET
     @Path("list")
@@ -70,12 +79,13 @@ public class MyResource {
     
     @GET
     @Path("sse")
-    @Produces(EventChannel.SERVER_SENT_EVENTS)
-    public EventChannel sse() {
+    @Produces(SseFeature.SERVER_SENT_EVENTS)
+    public EventOutput sse() {
         System.out.println("Registered");
-        EventChannel channel = new EventChannel();
-        ssebc.add(channel);
-        return channel;
+//        EventOutput channel = new EventOutput();
+//        broadcaster.add(channel);
+//        return channel;
+        return output;
     }
 
     @POST
@@ -83,10 +93,18 @@ public class MyResource {
     public void add(@PathParam("name")String name) {
         System.out.println("Adding " + name);
         FruitDatabase.add(name);
-        ssebc.broadcast(new OutboundEvent.Builder()
-                .name("add")
-                .data(String.class, name)
-                .build());
+        try {
+            output.write(new OutboundEvent.Builder()
+                    .name("add")
+                    .data(String.class, name)
+                    .build());
+        } catch (IOException ex) {
+            Logger.getLogger(MyResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        broadcaster.broadcast(new OutboundEvent.Builder()
+//                .name("add")
+//                .build());
+//                .build());
     }
 
     @DELETE
@@ -94,9 +112,17 @@ public class MyResource {
     public void delete(@PathParam("name")String name) {
         System.out.println("Removing " + name);
         String op = FruitDatabase.remove(name) ? "delete": "noop";
-        ssebc.broadcast(new OutboundEvent.Builder()
-                .name(op)
-                .data(String.class, name)
-                .build());
+        try {
+            output.write(new OutboundEvent.Builder()
+                    .name(op)
+                    .data(String.class, name)
+                    .build());
+        } catch (IOException ex) {
+            Logger.getLogger(MyResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        broadcaster.broadcast(new OutboundEvent.Builder()
+//                .name(op)
+//                .data(String.class, name)
+//                .build());
     }
 }

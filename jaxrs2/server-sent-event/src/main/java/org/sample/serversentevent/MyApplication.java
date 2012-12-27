@@ -51,6 +51,4 @@ public class MyApplication extends ResourceConfig {
     public MyApplication() {
         super(MyResource.class, OutboundEventWriter.class);
     }
-    
-            
 }
