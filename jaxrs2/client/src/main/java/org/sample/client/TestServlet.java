@@ -50,6 +50,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientFactory;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 
 /**
@@ -81,7 +82,13 @@ public class TestServlet extends HttpServlet {
             out.println("<h1>JAX-RS 2 Client API at " + request.getContextPath() + "</h1>");
             out.println("Initializing client...<br>");
             Client client = ClientFactory.newClient();
-            WebTarget target = client.target("http://localhost:8080/client/webresources/persons");
+            WebTarget target = client.target("http://" 
+                    + request.getServerName() 
+                    + ":"
+                    + request.getServerPort()
+                    + request.getContextPath()
+                    + "/webresources/persons");
+                    
             out.print("POSTing...<br>");
             // POST
             MultivaluedHashMap<String, String> map = new MultivaluedHashMap<>();
@@ -97,16 +104,16 @@ public class TestServlet extends HttpServlet {
             for (Person p : list) {
                 out.print(p + "<br>");
             }
-            out.println("... done.");
+            out.println("... done.<br>");
             
             // GET with path param
             out.print("GETTing with parameter...<br>");
             Person person = target
                     .path("{id}")
                     .resolveTemplate("id", "1")
-                    .request()
+                    .request(MediaType.APPLICATION_XML)
                     .get(Person.class);
-            out.format("GOT person:", person);
+            out.print("GOT person: " + person + "<br>");
             out.println("... done.");
             
             out.println("</body>");
