@@ -46,7 +46,6 @@ import javax.ws.rs.Path;
  * @author Arun Gupta
  */
 @Path("fruits")
-@ServerLogged
 public class MyResource {
     private String[] response = { "apple", "banana", "mango" };
     
