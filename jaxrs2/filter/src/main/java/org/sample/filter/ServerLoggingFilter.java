@@ -47,28 +47,30 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
 
 /**
+ * By default, a filter is globally bound. That means it is applied
+ * to all resources and all methods within that resource.
+ * 
  * @author Arun Gupta
  */
 @Provider
-@ServerLogged
 public class ServerLoggingFilter implements ContainerRequestFilter, ContainerResponseFilter {
 
     @Override
     public void filter(ContainerRequestContext crc) throws IOException {
-        System.out.println("ContainerRequestFilter.filter<start>");
+        System.out.println("ContainerRequestFilter<start>");
         System.out.println(crc.getMethod() + " " + crc.getUriInfo().getAbsolutePath());
         for (String key : crc.getHeaders().keySet()) {
             System.out.println(key + ": " + crc.getHeaders().get(key));
         }
-        System.out.println("ContainerRequestFilter.filter<end>");
+        System.out.println("ContainerRequestFilter<end>");
     }
 
     @Override
     public void filter(ContainerRequestContext crc, ContainerResponseContext crc1) throws IOException {
-        System.out.println("ContainerResponseFilter.filter<start>");
+        System.out.println("ContainerResponseFilter<start>");
         for (String key : crc1.getHeaders().keySet()) {
             System.out.println(key + ": " + crc1.getHeaders().get(key));
         }
-        System.out.println("ContainerResponseFilter.filter<end>");
+        System.out.println("ContainerResponseFilter<end>");
     }
 }

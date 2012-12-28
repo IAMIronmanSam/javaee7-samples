@@ -55,20 +55,20 @@ public class ClientLoggingFilter implements ClientRequestFilter, ClientResponseF
 
     @Override
     public void filter(ClientRequestContext crc) throws IOException {
-        System.out.println("ClientRequestContext<start>");
+        System.out.println("ClientRequestFilter<start>");
         System.out.println(crc.getMethod() + " " + crc.getUri());
         for (Entry e : crc.getHeaders().entrySet()) {
             System.out.print(e.getKey() + ": " + e.getValue());
         }
-        System.out.println("ClientRequestContext<end>");
+        System.out.println("ClientRequestFilter<end>");
     }
 
     @Override
     public void filter(ClientRequestContext crc, ClientResponseContext crc1) throws IOException {
-        System.out.println("ClientResponseContext<start>");
+        System.out.println("ClientResponseFilter<start>");
         for (Entry e : crc1.getHeaders().entrySet()) {
             System.out.print(e.getKey() + ": " + e.getValue());
         }
-        System.out.println("ClientResponseContext<end>");
+        System.out.println("ClientResponseFilter<end>");
     }
 }
