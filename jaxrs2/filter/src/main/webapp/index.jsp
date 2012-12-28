@@ -46,7 +46,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>JAX-RS 2 Filter</title>
     </head>
     <body>
         <h1>JAX-RS 2 Filter</h1>
