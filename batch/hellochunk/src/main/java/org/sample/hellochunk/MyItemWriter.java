@@ -50,8 +50,11 @@ import javax.batch.annotation.WriteItems;
  */
 @ItemWriter
 public class MyItemWriter {
+    MyCheckpoint checkpoint = null;
+    
     @Open
     void open(MyCheckpoint checkpoint) {
+        this.checkpoint = checkpoint;
         System.out.println(getClass().getName() + ".open: " + checkpoint.getItemCount());
     }
     
@@ -61,12 +64,13 @@ public class MyItemWriter {
         for (MyBatchRecord record : list) {
             System.out.println(record.getId());
         }
+        checkpoint.increment(list.size());
         System.out.println("... done.");
     }
     
     @CheckpointInfo
     MyCheckpoint getCheckPoint() {
-        return new MyCheckpoint();
+        return checkpoint;
     }
     
 }

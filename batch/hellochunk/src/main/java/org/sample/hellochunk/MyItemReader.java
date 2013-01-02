@@ -50,20 +50,23 @@ import javax.batch.annotation.ReadItem;
 @ItemReader
 public class MyItemReader {
     private static int id;
+    MyCheckpoint checkpoint = null;
     
     @Open
     void open(MyCheckpoint checkpoint) {
+        this.checkpoint = checkpoint;
         System.out.println(getClass().getName() + ".open: " + checkpoint.getItemCount());
     }
     
     @ReadItem
     MyBatchRecord read() {
+        checkpoint.incrementByOne();
         return new MyBatchRecord(++id);
     }
     
     @CheckpointInfo
     MyCheckpoint getCheckPoint() {
-        return new MyCheckpoint();
+        return checkpoint;
     }
     
 }
