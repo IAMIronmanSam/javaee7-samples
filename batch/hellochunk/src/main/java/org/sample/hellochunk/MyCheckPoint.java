@@ -39,38 +39,25 @@
  */
 package org.sample.hellochunk;
 
-import java.util.List;
-import javax.batch.annotation.CheckpointInfo;
-import javax.batch.annotation.ItemWriter;
-import javax.batch.annotation.Open;
-import javax.batch.annotation.WriteItems;
-
 /**
  * @author Arun Gupta
  */
-@ItemWriter
-public class MyItemWriter {
-    MyCheckPoint checkpoint = null;
-    
-    @Open
-    void open(MyCheckPoint checkpoint) {
-        this.checkpoint = checkpoint;
-        System.out.println(getClass().getName() + ".open: " + checkpoint.getItemCount());
+public class MyCheckPoint {
+    int itemCount;
+
+    public int getItemCount() {
+        return itemCount;
+    }
+
+    public void setItemCount(int itemCount) {
+        this.itemCount = itemCount;
     }
     
-    @WriteItems
-    void write(List<MyBatchRecord> list) {
-        System.out.println("Writing the chunk...");
-        for (MyBatchRecord record : list) {
-            System.out.println(record.getId());
-        }
-        checkpoint.increment(list.size());
-        System.out.println("... done.");
+    void incrementByOne() {
+        itemCount++;
     }
-    
-    @CheckpointInfo
-    MyCheckPoint getCheckPoint() {
-        return checkpoint;
+
+    void increment(int size) {
+        itemCount += size;
     }
-    
 }
