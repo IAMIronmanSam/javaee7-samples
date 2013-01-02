@@ -68,5 +68,4 @@ public class MyItemReader {
     MyCheckPoint getCheckPoint() {
         return checkpoint;
     }
-    
 }

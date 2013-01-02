@@ -72,5 +72,4 @@ public class MyItemWriter {
     MyCheckPoint getCheckPoint() {
         return checkpoint;
     }
-    
 }
