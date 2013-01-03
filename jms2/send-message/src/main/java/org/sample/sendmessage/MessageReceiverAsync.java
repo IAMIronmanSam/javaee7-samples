@@ -41,6 +41,7 @@ package org.sample.sendmessage;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -50,7 +51,14 @@ import javax.jms.TextMessage;
 /**
  * @author Arun Gupta
  */
-@MessageDriven(mappedName = "java:global/jms/myQueue")
+@MessageDriven(mappedName = "java:global/jms/myQueue", 
+        activationConfig = {
+            @ActivationConfigProperty(
+        propertyName = "destinationType", 
+        propertyValue = "javax.jms.Queue")})
+// Adding the workaround for activationConfig
+// This should not be required after http://java.net/jira/browse/GLASSFISH-19492
+// is fixed.
 public class MessageReceiverAsync implements MessageListener {
 
     @Override
