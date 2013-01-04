@@ -78,7 +78,13 @@ public class TestServlet extends HttpServlet {
         out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
         Client client = ClientFactory.newClient();
         client.configuration().register(ClientLoggingFilter.class);
-        WebTarget target = client.target("http://localhost:8080/filter/webresources/fruits");
+        WebTarget target = client.target("http://"
+                + request.getServerName()
+                + ":"
+                + request.getServerPort()
+                + request.getContextPath()
+                + "/webresources/fruits");
+        out.println(target.getUri());
         String result = target.request().get(String.class);
         out.println("Received response: " + result + "<br><br>");
         out.println("Check server.log for client/server filter output.");
