@@ -96,7 +96,8 @@ public class TestServlet extends HttpServlet {
             out.format("Message sent: %1$s.<br>", m);
             out.println("Receiving message...<br>");
             String message = receiver.receiveMessage();
-            out.println("Message rx: " + message);
+            out.println("Message received (synchronous): " + message);
+            out.println("<br><br>Check server.log for output from asynchronous bean.");
             out.println("</body>");
             out.println("</html>");
         }
