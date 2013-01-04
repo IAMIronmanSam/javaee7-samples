@@ -77,10 +77,19 @@ public class TestServlet extends HttpServlet {
         out.println("<body>");
         out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
         Client client = ClientFactory.newClient();
-        client.configuration().register(GzipInterceptor.class);
-        WebTarget target = client.target("http://localhost:8080/interceptor/webresources/fruits");
+        client
+                .configuration()
+                .register(GzipReaderInterceptor.class)
+                .register(GzipWriterInterceptor.class);
+        WebTarget target = client.target("http://"
+                + request.getServerName()
+                + ":"
+                + request.getServerPort()
+                + request.getContextPath()
+                + "/webresources/fruits");
         String result = target.request().get(String.class);
-        out.println("Received response: " + result);
+        out.println("Received response: " + result + "<br><br>");
+        out.println("Check server.log for client/server interceptor output.");
         out.println("</body>");
         out.println("</html>");
     }
