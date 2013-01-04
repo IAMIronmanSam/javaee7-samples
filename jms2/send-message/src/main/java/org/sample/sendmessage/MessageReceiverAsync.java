@@ -51,7 +51,7 @@ import javax.jms.TextMessage;
 /**
  * @author Arun Gupta
  */
-@MessageDriven(mappedName = "java:global/jms/myQueue", 
+@MessageDriven(mappedName = "java:global/jms/myAsyncQueue", 
         activationConfig = {
             @ActivationConfigProperty(
         propertyName = "destinationType", 

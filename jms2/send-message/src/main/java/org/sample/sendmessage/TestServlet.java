@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.jms.JMSDestinationDefinition;
+import javax.jms.JMSDestinationDefinitions;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -52,11 +53,17 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author Arun Gupta
  */
-@JMSDestinationDefinition(name = "java:global/jms/myQueue",
+@JMSDestinationDefinitions({@JMSDestinationDefinition(name = "java:global/jms/mySyncQueue",
         resourceAdapterName = "jmsra",
         className = "javax.jms.Queue",
-        destinationName="queue1234",
-        description="My Queue")
+        destinationName="syncQueue",
+        description="My Sync Queue"),
+    @JMSDestinationDefinition(name = "java:global/jms/myAsyncQueue",
+        resourceAdapterName = "jmsra",
+        className = "javax.jms.Queue",
+        destinationName="asyncQueue",
+        description="My Async Queue")
+})
 @WebServlet(urlPatterns = {"/TestServlet"})
 public class TestServlet extends HttpServlet {
     

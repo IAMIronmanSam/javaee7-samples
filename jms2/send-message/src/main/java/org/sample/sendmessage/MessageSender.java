@@ -53,13 +53,17 @@ import javax.jms.Queue;
 public class MessageSender {
 
     @Inject
-    @JMSConnectionFactory("java:comp/DefaultJMSConnectionFactory")
+//    @JMSConnectionFactory("java:comp/DefaultJMSConnectionFactory")
     JMSContext context;
     
-    @Resource(mappedName="java:global/jms/myQueue")
-    Queue queue;
+    @Resource(mappedName="java:global/jms/mySyncQueue")
+    Queue syncQueue;
+
+    @Resource(mappedName="java:global/jms/myAsyncQueue")
+    Queue asyncQueue;
 
     public void sendMessage(String message) {
-        context.createProducer().send(queue, message);
+        context.createProducer().send(syncQueue, message);
+        context.createProducer().send(asyncQueue, message);
     }
 }

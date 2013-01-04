@@ -54,7 +54,7 @@ public class MessageReceiverSync {
     @Inject
     private JMSContext context;
     
-    @Resource(mappedName="java:global/jms/myQueue")
+    @Resource(mappedName="java:global/jms/mySyncQueue")
     Queue myQueue;
 
     public String receiveMessage() {
