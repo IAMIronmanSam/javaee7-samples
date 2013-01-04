@@ -5,10 +5,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>JAX-RS 2 Interceptor</title>
     </head>
     <body>
         <h1>JAX-RS 2 Interceptor</h1>
-        Invoke the <a href="/interceptor/TestServlet"/>Client</a> and check the server.log for filter output.
+        Invoke the <a href="/interceptor/TestServlet"/>Client</a> and check the server.log for interceptor output.
     </body>
 </html>
