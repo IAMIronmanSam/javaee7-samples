@@ -1,7 +1,7 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright (c) 2012 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013 Oracle and/or its affiliates. All rights reserved.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common Development
@@ -41,19 +41,18 @@ package org.sample.interceptor;
 
 import java.io.IOException;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.ext.Provider;
-import javax.ws.rs.ext.WriterInterceptor;
-import javax.ws.rs.ext.WriterInterceptorContext;
+import javax.ws.rs.ext.ReaderInterceptor;
+import javax.ws.rs.ext.ReaderInterceptorContext;
 
 /**
  * @author Arun Gupta
  */
-@Provider
-public class GzipWriterInterceptor implements WriterInterceptor {
+public class MyServerReaderInterceptor implements ReaderInterceptor {
 
     @Override
-    public void aroundWriteTo(WriterInterceptorContext wic) throws IOException, WebApplicationException {
-        System.out.println("aroundWriteTo");
-        wic.proceed();
+    public Object aroundReadFrom(ReaderInterceptorContext ric) throws IOException, WebApplicationException {
+        System.out.println("aroundReadFrom(server)");
+        return ric.proceed();
     }
+
 }

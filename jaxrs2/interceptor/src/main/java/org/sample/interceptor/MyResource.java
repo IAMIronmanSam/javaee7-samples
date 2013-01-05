@@ -39,21 +39,29 @@
  */
 package org.sample.interceptor;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
 /**
  * @author Arun Gupta
  */
 @Path("fruits")
-@Gzipped
 public class MyResource {
     private String[] response = { "apple", "banana", "mango" };
     
     @GET
-    public String getList() {
-        System.out.println("endpoint invoked");
+    public String getFruit() {
+        System.out.println("endpoint invoked (getFruit)");
         return response[0];
     }
-
+    
+    @POST
+    @Consumes(value="*/*")
+    public String getFruit2(String index) {
+        System.out.println("endpoint invoked (getFruit2(" + index + "))");
+        
+        return response[Integer.valueOf(index) % 3];
+    }
 }

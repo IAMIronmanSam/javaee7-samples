@@ -48,6 +48,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientFactory;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 
 /**
@@ -79,16 +80,26 @@ public class TestServlet extends HttpServlet {
         Client client = ClientFactory.newClient();
         client
                 .configuration()
-                .register(GzipReaderInterceptor.class)
-                .register(GzipWriterInterceptor.class);
+                .register(MyClientReaderInterceptor.class)
+                .register(MyClientWriterInterceptor.class);
         WebTarget target = client.target("http://"
                 + request.getServerName()
                 + ":"
                 + request.getServerPort()
                 + request.getContextPath()
                 + "/webresources/fruits");
-        String result = target.request().get(String.class);
+        System.out.println("GET request");
+        String result = target
+                .request()
+                .get(String.class);
         out.println("Received response: " + result + "<br><br>");
+        
+        System.out.println("POST request");
+        result = target
+                .request()
+                .post(Entity.text("1"), String.class);
+        out.println("Received response: " + result + "<br><br>");
+        
         out.println("Check server.log for client/server interceptor output.");
         out.println("</body>");
         out.println("</html>");

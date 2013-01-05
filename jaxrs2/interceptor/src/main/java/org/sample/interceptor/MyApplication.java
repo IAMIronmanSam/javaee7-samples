@@ -52,8 +52,8 @@ public class MyApplication extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
         resources.add(org.sample.interceptor.MyResource.class);
-        resources.add(org.sample.interceptor.GzipReaderInterceptor.class);
-        resources.add(org.sample.interceptor.GzipWriterInterceptor.class);
+        resources.add(org.sample.interceptor.MyServerReaderInterceptor.class);
+        resources.add(org.sample.interceptor.MyServerWriterInterceptor.class);
         return resources;
     }
 }
