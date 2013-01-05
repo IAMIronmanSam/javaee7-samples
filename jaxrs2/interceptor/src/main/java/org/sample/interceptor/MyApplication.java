@@ -51,9 +51,9 @@ public class MyApplication extends Application {
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
-        resources.add(org.sample.interceptor.MyResource.class);
-        resources.add(org.sample.interceptor.MyServerReaderInterceptor.class);
-        resources.add(org.sample.interceptor.MyServerWriterInterceptor.class);
+        resources.add(MyResource.class);
+        resources.add(MyServerReaderInterceptor.class);
+        resources.add(MyServerWriterInterceptor.class);
         return resources;
     }
 }
