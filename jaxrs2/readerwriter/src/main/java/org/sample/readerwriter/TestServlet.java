@@ -90,11 +90,15 @@ public class TestServlet extends HttpServlet {
                 + request.getContextPath()
                 + "/webresources/fruits");
         System.out.println("POST request");
-        MyObject mo = target
-                .request(MyResource.MIME_TYPE)
-                .acceptLanguage(MyResource.MIME_TYPE)
-                .post(Entity.entity(new MyObject(1), MyResource.MIME_TYPE), MyObject.class);
-        out.println("Received response: " + mo.getFruit() + "<br><br>");
+        String fruit = target
+                .request()
+                .post(Entity.entity(new MyObject(1), MyObject.MIME_TYPE), String.class);
+        out.println("Received response: " + fruit + "<br><br>");
+        fruit = target
+                .path("fruitInt")
+                .request()
+                .post(Entity.text("1"), String.class);
+        out.println("Received response: " + fruit + "<br><br>");
         
         out.println("Check server.log for client/server interceptor output.");
         out.println("</body>");

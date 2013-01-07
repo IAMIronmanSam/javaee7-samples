@@ -49,13 +49,18 @@ import javax.ws.rs.Path;
 @Path("fruits")
 public class MyResource {
     private String[] response = { "apple", "banana", "mango" };
-    public static final String MIME_TYPE = "application/myType";
     
     @POST
-    @Consumes(value=MIME_TYPE)
-    public MyObject getFruit(MyObject mo) {
+    @Consumes(value=MyObject.MIME_TYPE)
+    public String getFruit(MyObject mo) {
         System.out.println("endpoint invoked (getFruit(" + mo.getIndex() + "))");
         
-        return new MyObject(response[Integer.valueOf(mo.getIndex()) % 3]);
+        return response[Integer.valueOf(mo.getIndex()) % 3];
+    }
+    
+    @POST
+    @Path("fruitInt")
+    public String getFruit2(int index) {
+        return response[index % 3];
     }
 }

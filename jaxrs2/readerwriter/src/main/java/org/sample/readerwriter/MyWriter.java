@@ -55,7 +55,7 @@ import javax.ws.rs.ext.Provider;
  * @author Arun Gupta
  */
 @Provider
-@Produces(MyResource.MIME_TYPE)
+@Produces(MyObject.MIME_TYPE)
 public class MyWriter implements MessageBodyWriter<MyObject> {
 
     @Override
@@ -84,5 +84,4 @@ public class MyWriter implements MessageBodyWriter<MyObject> {
         ObjectOutputStream oos = new ObjectOutputStream(out);
         oos.writeObject(t);
     }
-
 }

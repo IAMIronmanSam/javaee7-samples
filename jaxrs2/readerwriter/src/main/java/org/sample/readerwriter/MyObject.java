@@ -45,8 +45,9 @@ import java.io.Serializable;
  * @author Arun Gupta
  */
 public class MyObject implements Serializable {
+    public static final String MIME_TYPE = "application/myType";
+
     private int index;
-    private String fruit;
 
     public MyObject() {
     }
@@ -55,28 +56,11 @@ public class MyObject implements Serializable {
         this.index = index;
     }
 
-    public MyObject(String fruit) {
-        this.fruit = fruit;
-    }
-
-    public MyObject(int index, String fruit) {
-        this.index = index;
-        this.fruit = fruit;
-    }
-    
     public int getIndex() {
         return index;
     }
 
     public void setIndex(int index) {
         this.index = index;
-    }
-
-    public String getFruit() {
-        return fruit;
-    }
-
-    public void setFruit(String fruit) {
-        this.fruit = fruit;
     }
 }

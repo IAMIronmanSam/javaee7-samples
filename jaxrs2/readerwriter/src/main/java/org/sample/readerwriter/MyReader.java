@@ -57,7 +57,7 @@ import javax.ws.rs.ext.Provider;
  * @author Arun Gupta
  */
 @Provider
-@Consumes(MyResource.MIME_TYPE)
+@Consumes(MyObject.MIME_TYPE)
 public class MyReader implements MessageBodyReader<MyObject> {
 
     @Override
