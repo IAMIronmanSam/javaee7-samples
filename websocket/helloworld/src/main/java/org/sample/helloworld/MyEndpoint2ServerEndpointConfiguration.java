@@ -39,36 +39,62 @@
  */
 package org.sample.helloworld;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.websocket.ContainerProvider;
-import javax.websocket.DefaultServerConfiguration;
-import javax.websocket.ServerContainer;
+import java.net.URI;
+import java.util.List;
+import javax.websocket.Decoder;
+import javax.websocket.Encoder;
+import javax.websocket.EndpointFactory;
+import javax.websocket.HandshakeRequest;
+import javax.websocket.HandshakeResponse;
 import javax.websocket.ServerEndpointConfiguration;
 
 /**
  * @author Arun Gupta
  */
-//@WebListener("/")
-public class EchoBean2Bootstrap implements ServletContextListener {
+public class MyEndpoint2ServerEndpointConfiguration implements ServerEndpointConfiguration {
 
     @Override
-    public void contextInitialized(ServletContextEvent sce) {
-//        try {
-            EchoBean2 echoBean2 = new EchoBean2();
-            ServerEndpointConfiguration serverConfig = new DefaultServerConfiguration("/echo2");
-//            assert serverConfig == null;
-            ServerContainer serverContainer = ContainerProvider.getServerContainer();
-            assert serverContainer == null;
-//            serverContainer.publishServer(serverConfig);
-//        } catch (ConnectException ex) {
-//            Logger.getLogger(EchoBean2Bootstrap.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+    public EndpointFactory getEndpointFactory() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void contextDestroyed(ServletContextEvent sce) {
+    public String getNegotiatedSubprotocol(List requestedSubprotocols) {
+        return null;
+    }
+
+    @Override
+    public List getNegotiatedExtensions(List requestedExtensions) {
+        return null;
+    }
+
+    @Override
+    public boolean checkOrigin(String originHeaderValue) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean matchesURI(URI uri) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void modifyHandshake(HandshakeRequest request, HandshakeResponse response) {
+    }
+
+    @Override
+    public String getPath() {
+        return "/endpoint2";
+    }
+
+    @Override
+    public List<Encoder> getEncoders() {
+        return null;
+    }
+
+    @Override
+    public List<Decoder> getDecoders() {
+        return null;
     }
     
 }

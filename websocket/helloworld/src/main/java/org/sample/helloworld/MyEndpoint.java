@@ -40,28 +40,71 @@
 package org.sample.helloworld;
 
 import java.io.IOException;
-import javax.websocket.Endpoint;
-import javax.websocket.MessageHandler;
+import java.nio.ByteBuffer;
+import javax.websocket.EndpointFactory;
 import javax.websocket.Session;
+import javax.websocket.WebSocketEndpoint;
+import javax.websocket.WebSocketMessage;
 
 /**
  * @author Arun Gupta
  */
-public class EchoBean2 extends Endpoint {
+@WebSocketEndpoint(value="/endpoint", factory=MyEndpoint.DummyEndpointFactory.class)
+public class MyEndpoint {
+    
+    @WebSocketMessage
+    public String sayHello(String name) {
+        System.out.println("echoText");
+        return "Hello " + name + "!";
+    }
+    
+//    @WebSocketMessage
+//    public void sayHelloTwice(String name, Session session) throws IOException {
+//        System.out.println("echoTextTwice");
+//        session.getRemote().sendString("Hello " + name + "! (void-1)");
+//        session.getRemote().sendString("Hello " + name + "! (void-2)");
+//    }
 
-    @Override
-    public void onOpen(final Session session) {
-        session.addMessageHandler(new MessageHandler.Basic<String>() {
+//    @WebSocketMessage
+//    public ByteBuffer echoBinary(ByteBuffer data) {
+//        System.out.println("echoBinary: " + data);
+//        for (byte b : data.array()) {
+//            System.out.print(b);
+//        }
+//        return data;
+//    }
 
-            @Override
-            public void onMessage(String name) {
-                try {
-                    session.getRemote().sendString("Hello " + name);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
+    @WebSocketMessage
+    public void echoBinary(ByteBuffer data, Session session) throws IOException {
+        System.out.println("echoBinary: " + data);
+        for (byte b : data.array()) {
+            System.out.print(b);
+        }
+        session.getRemote().sendBytes(data);
+    }
+
+//    @WebSocketMessage
+//    public byte[] echoBinary2(byte[] data) {
+//        System.out.println("sayHelloBinary");
+//        return data;
+//    }
+    
+//    @WebSocketMessage
+//    public String sayHello3(String data) {
+//        System.out.println("sayHello3");
+//        return data;
+//    }
+    
+    /**
+     * Only a workaround until the API is updated.
+     * This class is not used in the RI anyway.
+     */
+    class DummyEndpointFactory implements EndpointFactory {
+
+        @Override
+        public Object createEndpoint() {
+            return null;
+        }
     }
     
 }

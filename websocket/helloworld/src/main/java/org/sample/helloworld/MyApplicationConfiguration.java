@@ -40,9 +40,8 @@
 package org.sample.helloworld;
 
 /**
- *
  * @author Arun Gupta
  */
-public class EchoBean2Configuration {
-    
+public class MyApplicationConfiguration { //implements ServerApplicationConfiguration {
+
 }
