@@ -39,7 +39,9 @@
  */
 package org.sample.interceptor;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.ext.ReaderInterceptor;
 import javax.ws.rs.ext.ReaderInterceptorContext;
@@ -51,6 +53,8 @@ public class MyServerReaderInterceptor implements ReaderInterceptor {
 
     @Override
     public Object aroundReadFrom(ReaderInterceptorContext ric) throws IOException, WebApplicationException {
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(ric.getInputStream()));
+//        System.out.println("aroundReadFrom(server) " + reader.readLine());
         System.out.println("aroundReadFrom(server)");
         return ric.proceed();
     }
