@@ -57,44 +57,18 @@ public class MyEndpoint {
         System.out.println("echoText");
         return "Hello " + name + "!";
     }
-    
-//    @WebSocketMessage
-//    public void sayHelloTwice(String name, Session session) throws IOException {
-//        System.out.println("echoTextTwice");
-//        session.getRemote().sendString("Hello " + name + "! (void-1)");
-//        session.getRemote().sendString("Hello " + name + "! (void-2)");
-//    }
-
-//    @WebSocketMessage
-//    public ByteBuffer echoBinary(ByteBuffer data) {
-//        System.out.println("echoBinary: " + data);
-//        for (byte b : data.array()) {
-//            System.out.print(b);
-//        }
-//        return data;
-//    }
 
     @WebSocketMessage
     public void echoBinary(ByteBuffer data, Session session) throws IOException {
         System.out.println("echoBinary: " + data);
+        StringBuilder builder = new StringBuilder();
         for (byte b : data.array()) {
-            System.out.print(b);
+            builder.append(b);
         }
+        System.out.println(builder);
         session.getRemote().sendBytes(data);
     }
 
-//    @WebSocketMessage
-//    public byte[] echoBinary2(byte[] data) {
-//        System.out.println("sayHelloBinary");
-//        return data;
-//    }
-    
-//    @WebSocketMessage
-//    public String sayHello3(String data) {
-//        System.out.println("sayHello3");
-//        return data;
-//    }
-    
     /**
      * Only a workaround until the API is updated.
      * This class is not used in the RI anyway.

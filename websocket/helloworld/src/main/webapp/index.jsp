@@ -45,16 +45,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Hello WebSocket</title>
+        <title>Getting Started with JSR 356</title>
 
     </head>
     <body>
-        <h1>Getting Started with WebSocket!!</h1>
+        <h1>Getting Started with JSR 356</h1>
 
         <div style="text-align: center;">
             <form action=""> 
                 <h2>Text Data</h2>
-                <input onclick="echoText()" value="Echo" type="button"> 
+                <input onclick="sayHello()" value="Say Hello" type="button"> 
                 <input id="myField" value="WebSocket" type="text"><br>
             </form>
             <form action=""> 
