@@ -46,9 +46,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Non-blocking I/O using Servlet 3.1</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Non-blocking I/O using Servlet 3.1</h1>
+        Invoke <a href="${pageContext.request.contextPath}/TestClient">non-blocking i/o client</a>.
     </body>
 </html>
