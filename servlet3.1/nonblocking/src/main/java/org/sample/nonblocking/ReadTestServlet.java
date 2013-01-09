@@ -82,18 +82,6 @@ public class ReadTestServlet extends HttpServlet {
 
             input.setReadListener(new MyReadListener(input, context));
 
-            // TODO: This is redundant code and should only be 
-            // specified once in MyReadListener. For now, all the data from
-            // InputStream need to be read before ReadListener is engaged.
-            // EG has already agreed on simplification and the implementation
-            // will be updated to reflect that. This sample will be updated 
-            // after that.
-            int b = -1;
-            while (input.isReady() && ((b = input.read()) != -1)) {
-                System.out.println("-->" + (char) b);
-                output.write(b);
-            }
-
             output.println("</body>");
             output.println("</html>");
         }
