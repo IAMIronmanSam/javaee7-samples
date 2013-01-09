@@ -107,7 +107,7 @@ public class TestClient extends HttpServlet {
                 output.flush();
                 output.close();
             }
-            out.println("Check GlassFish server.log");
+            out.println("<br><br>Check GlassFish server.log");
             out.println("</body>");
             out.println("</html>");
         } catch (InterruptedException | IOException ex) {
