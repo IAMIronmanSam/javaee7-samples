@@ -52,7 +52,7 @@ public class MyApplication extends Application {
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
-        resources.add(org.sample.client.MyResource.class);
+        resources.add(MyResource.class);
         return resources;
     }
     
