@@ -1,7 +1,7 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright (c) 2012 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013 Oracle and/or its affiliates. All rights reserved.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common Development
@@ -53,8 +53,15 @@ import javax.websocket.WebSocketMessage;
 public class MyEndpoint {
 
     @WebSocketMessage
-    public MyMessage2 messageReceived(MyMessage2 message) {
+    public MyMessage messageReceived(MyMessage message) {
         System.out.println("messageReceived: " + message);
+        
+        return message;
+    }
+    
+    @WebSocketMessage
+    public MyMessage2 messageReceived2(MyMessage2 message) {
+        System.out.println("messageReceived2: " + message);
         
         return message;
     }
