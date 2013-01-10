@@ -39,34 +39,27 @@
  */
 package org.sample.encoder;
 
-import javax.json.JsonObject;
+import java.io.StringReader;
+import javax.json.JsonReader;
+import javax.websocket.DecodeException;
+import javax.websocket.Decoder;
 
 /**
  * @author Arun Gupta
  */
-public class MyMessage {
-    
-    private JsonObject jsonObject;
+public class MyMessageDecoder implements Decoder.Text<MyMessage> {
 
-    public MyMessage() {
-    }
-
-    public MyMessage(JsonObject jsonObject) {
-        this.jsonObject = jsonObject;
-    }
-
-    public JsonObject getJsonObject() {
-        return jsonObject;
-    }
-
-    public void setJsonObject(JsonObject jsonObject) {
-        this.jsonObject = jsonObject;
-    }
-    
     @Override
-    public String toString() {
-//        return this.getClass().getName();
-        return jsonObject.toString();
+    public MyMessage decode(String string) throws DecodeException {
+        System.out.println("decoding: " + string);
+        MyMessage myMessage = new MyMessage(new JsonReader(new StringReader(string)).readObject());
+
+        System.out.println(myMessage.getJsonObject());
+        return myMessage;
     }
-    
+
+    @Override
+    public boolean willDecode(String string) {
+        return true;
+    }
 }

@@ -47,8 +47,8 @@ import javax.websocket.WebSocketMessage;
  * @author Arun Gupta
  */
 @WebSocketEndpoint(value = "/encoder", 
-        encoders = {MyMessage.class, MyMessage2.class}, 
-        decoders = {MyMessage.class, MyMessage2.class},
+        encoders = {MyMessageEncoder.class, MyMessage2.class}, 
+        decoders = {MyMessageDecoder.class, MyMessage2.class},
         factory=MyEndpoint.DummyEndpointFactory.class)
 public class MyEndpoint {
 

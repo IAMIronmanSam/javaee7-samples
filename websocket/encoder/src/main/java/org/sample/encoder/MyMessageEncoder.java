@@ -39,34 +39,18 @@
  */
 package org.sample.encoder;
 
-import javax.json.JsonObject;
+import javax.websocket.EncodeException;
+import javax.websocket.Encoder;
 
 /**
  * @author Arun Gupta
  */
-public class MyMessage {
-    
-    private JsonObject jsonObject;
-
-    public MyMessage() {
-    }
-
-    public MyMessage(JsonObject jsonObject) {
-        this.jsonObject = jsonObject;
-    }
-
-    public JsonObject getJsonObject() {
-        return jsonObject;
-    }
-
-    public void setJsonObject(JsonObject jsonObject) {
-        this.jsonObject = jsonObject;
-    }
-    
+public class MyMessageEncoder implements Encoder.Text<MyMessage> {
     @Override
-    public String toString() {
+    public String encode(MyMessage myMessage) throws EncodeException {
 //        return this.getClass().getName();
-        return jsonObject.toString();
+        return myMessage.getJsonObject().toString();
     }
+    
     
 }
