@@ -49,15 +49,19 @@ import java.util.List;
 public class Database {
     private static final List<String> list = new ArrayList<>();
 
-    public String[] list() {
-        return list.toArray(new String[0]);
+    static public String getAll() {
+        return list.toString();
     }
     
-    public void add(String fruit) {
+    static public String get(String fruit) {
+        return list.contains(fruit) ? fruit : "";
+    }
+    
+    static public void add(String fruit) {
         list.add(fruit);
     }
     
-    public void delete(String fruit) {
+    static public void delete(String fruit) {
         list.remove(fruit);
     }
 }

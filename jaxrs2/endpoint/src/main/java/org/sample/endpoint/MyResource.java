@@ -41,12 +41,10 @@ package org.sample.endpoint;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.HEAD;
-import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.PathParam;
 
 /**
  * @author Arun Gupta
@@ -55,35 +53,33 @@ import javax.ws.rs.Produces;
 public class MyResource {
 
     @GET
-    @Produces("application/xml")
     public String get() {
         System.out.println("GET");
-        return "";
+        return Database.getAll();
+    }
+    
+    @GET
+    @Path("{fruit}")
+    public String get(@PathParam("fruit")String fruit) {
+        System.out.println("GET");
+        return Database.get(fruit);
     }
     
     @POST
     public void post(String payload) {
         System.out.println("POST");
+        Database.add(payload);
     }
     
     @PUT
     public void put(String payload) {
         System.out.println("PUT");
+        Database.add(payload);
     }
     
     @DELETE
     public void delete(String payload) {
         System.out.println("DELETE");
+        Database.delete(payload);
     }
-    
-    @HEAD
-    public void head() {
-        
-    }
-    
-    @OPTIONS
-    public void options() {
-        
-    }
-            
 }
