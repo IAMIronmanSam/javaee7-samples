@@ -2,7 +2,7 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright (c) 2012 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013 Oracle and/or its affiliates. All rights reserved.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common Development
@@ -46,10 +46,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>JAX-RS 2 Client API</title>
     </head>
     <body>
         <h1>JAX-RS 2 Client API</h1>
-        Invoke the <a href="/client/TestServlet"/>Client API</a>.
+        Invoke the <a href="${pageContext.request.contextPath}/TestServlet"/>Client API</a>.
     </body>
 </html>
