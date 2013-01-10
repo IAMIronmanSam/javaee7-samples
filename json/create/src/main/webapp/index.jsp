@@ -50,6 +50,7 @@
     </head>
     <body>
         <h1>JSON Streaming and DOM generator</h1>
-        <a href="${pageContext.request.contextPath}/TestServlet">Generate JSON</a>
+        <a href="${pageContext.request.contextPath}/StreamingTestServlet">Generate JSON</a> using Streaming APIs. <br><br>
+        <a href="${pageContext.request.contextPath}/DOMTestServlet">Generate JSON</a> using DOM APIs.
     </body>
 </html>
