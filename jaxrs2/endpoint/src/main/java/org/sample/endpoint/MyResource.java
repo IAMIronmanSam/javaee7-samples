@@ -41,6 +41,8 @@ package org.sample.endpoint;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -73,4 +75,15 @@ public class MyResource {
     public void delete(String payload) {
         System.out.println("DELETE");
     }
+    
+    @HEAD
+    public void head() {
+        
+    }
+    
+    @OPTIONS
+    public void options() {
+        
+    }
+            
 }
