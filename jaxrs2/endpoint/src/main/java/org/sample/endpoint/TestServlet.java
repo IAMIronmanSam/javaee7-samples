@@ -88,32 +88,32 @@ public class TestServlet extends HttpServlet {
                     + request.getServerPort()
                     + request.getContextPath()
                     + "/webresources/fruit");
-            
+
             // POST
             out.print("POSTing...<br>");
             target.request().post(Entity.text("apple"));
             out.format("POSTed %1$s ...<br>", "apple");
-            
+
             // PUT
             out.print("<br>PUTing...<br>");
             target.request().put(Entity.text("banana"));
             out.format("PUTed %1$s ...<br>", "banana");
-            
+
             // GET (all)
             out.print("<br>GETing...<br>");
             String r = target.request().get(String.class);
             out.format("GETed %1$s items ...<br>", r);
-            
+
             // GET (one)
             out.print("<br>GETing...<br>");
             r = target.path("apple").request().get(String.class);
             out.format("GETed %1$s items ...<br>", r);
-            
+
             // DELETE
             out.print("<br>DELETEing...<br>");
             target.path("banana").request().delete();
             out.format("DELETEed %1$s items ...<br>", "banana");
-            
+
             // GET (all)
             out.print("<br>GETing...<br>");
             r = target.request().get(String.class);
