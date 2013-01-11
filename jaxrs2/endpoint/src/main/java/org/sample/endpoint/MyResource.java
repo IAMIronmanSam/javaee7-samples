@@ -78,7 +78,8 @@ public class MyResource {
     }
     
     @DELETE
-    public void delete(String payload) {
+    @Path("{name}")
+    public void delete(@PathParam("name")String payload) {
         System.out.println("DELETE");
         Database.delete(payload);
     }
