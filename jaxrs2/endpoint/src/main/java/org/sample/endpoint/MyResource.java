@@ -60,9 +60,9 @@ public class MyResource {
     
     @GET
     @Path("{name}")
-    public String get(@PathParam("name")String fruit) {
+    public String get(@PathParam("name")String payload) {
         System.out.println("GET");
-        return Database.get(fruit);
+        return Database.get(payload);
     }
     
     @POST
