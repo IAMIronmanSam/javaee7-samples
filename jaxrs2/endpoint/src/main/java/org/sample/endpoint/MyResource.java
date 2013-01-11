@@ -49,7 +49,7 @@ import javax.ws.rs.PathParam;
 /**
  * @author Arun Gupta
  */
-@Path("/resource")
+@Path("/fruit")
 public class MyResource {
 
     @GET
@@ -59,8 +59,8 @@ public class MyResource {
     }
     
     @GET
-    @Path("{fruit}")
-    public String get(@PathParam("fruit")String fruit) {
+    @Path("{name}")
+    public String get(@PathParam("name")String fruit) {
         System.out.println("GET");
         return Database.get(fruit);
     }

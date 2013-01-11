@@ -42,6 +42,7 @@ package org.sample.endpoint;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -51,6 +52,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientFactory;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import org.glassfish.jersey.filter.LoggingFilter;
 
 /**
  * @author Arun Gupta
@@ -79,12 +81,13 @@ public class TestServlet extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
             Client client = ClientFactory.newClient();
+            client.configuration().register(new LoggingFilter(Logger.getAnonymousLogger(), true));
             WebTarget target = client.target("http://" 
                     + request.getServerName() 
                     + ":"
                     + request.getServerPort()
                     + request.getContextPath()
-                    + "/webresources/resource");
+                    + "/webresources/fruit");
             
             // POST
             out.print("POSTing...<br>");
