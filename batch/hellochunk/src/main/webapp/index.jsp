@@ -46,9 +46,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Getting Started with Batch API - Hello Chunk!</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Getting Started with Batch API - Hello Chunk!</h1>
+        Start the <a href="${pageContext.request.contextPath}/TestServlet"/>job</a>.
     </body>
 </html>
